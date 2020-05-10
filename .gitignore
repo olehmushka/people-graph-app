@@ -1,4 +1,5 @@
 graph-db/
+storage/
 node_modules/
 lock.yarn
 package-lock.json
