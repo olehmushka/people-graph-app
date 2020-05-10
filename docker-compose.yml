@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  neo4j:
+    image: neo4j:3.5
+    restart: unless-stopped
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - ./graph-db/conf:/conf
+      - ./graph-db/data:/data
+      - ./graph-db/import:/import
+      - ./graph-db/logs:/logs
+      - ./graph-db/plugins:/plugins
+    env_file:
+      - ./.env
+
+  postgres:
+    image: postgres:10.4
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.env
+    volumes:
+      - ./storage/postgresql/data:/var/lib/postgresql/data
+    logging:
+      driver: none
