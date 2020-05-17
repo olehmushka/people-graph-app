@@ -17,10 +17,7 @@ export interface IPersonHandlersGetAllParams {
 }
 
 export class PersonHandlers implements IPersonHandlers {
-  constructor(
-    private logger: BaseLogger,
-    private neo4jClient: INeo4jClient,
-  ) {}
+  constructor(private logger: BaseLogger, private neo4jClient: INeo4jClient) {}
 
   public async createOne(basePerson: IBasePerson): Promise<IPerson> {
     try {
@@ -30,14 +27,14 @@ export class PersonHandlers implements IPersonHandlers {
       };
       const p = this.parseBasePerson(person);
       await this.neo4jClient.run(
-        'CREATE (p:Person {'+
-            `id: "${p.id}", `+
-            `firstName: "${p.firstName}", `+
-            `lastName: "${p.lastName}", `+
-            `birthday: datetime("${p.birthday}"), `+
-            `phoneNumbers: []`+
-          '}) '+
-        'RETURN p',
+        'CREATE (p:Person {' +
+          `id: "${p.id}", ` +
+          `firstName: "${p.firstName}", ` +
+          `lastName: "${p.lastName}", ` +
+          `birthday: datetime("${p.birthday}"), ` +
+          `phoneNumbers: []` +
+          '}) ' +
+          'RETURN p',
       );
 
       return person;
@@ -56,7 +53,9 @@ export class PersonHandlers implements IPersonHandlers {
 
   public async getAll(params: IPersonHandlersGetAllParams): Promise<IPerson[]> {
     return this.neo4jClient
-      .run(`MATCH (p:Person) RETURN p SKIP ${params.skip} LIMIT ${params.limit}`)
+      .run(
+        `MATCH (p:Person) RETURN p SKIP ${params.skip} LIMIT ${params.limit}`,
+      )
       .then((records) => {
         return records.map((r) => {
           const { properties: p } = r.get('p');
@@ -84,8 +83,7 @@ export class PersonHandlers implements IPersonHandlers {
   public async deleteOne(id: string): Promise<void> {
     try {
       await this.neo4jClient.run(
-        `MATCH (p:Person {id: "${id}"}) `+
-        'DELETE p',
+        `MATCH (p:Person {id: "${id}"}) ` + 'DELETE p',
       );
     } catch (error) {
       return this.errorHandle(error);
@@ -94,8 +92,8 @@ export class PersonHandlers implements IPersonHandlers {
 
   private errorHandle(error: any): Promise<any> {
     const { stack, message } = error;
-      this.logger.error({ stack }, message);
+    this.logger.error({ stack }, message);
 
-      return Promise.reject(error);
+    return Promise.reject(error);
   }
 }

@@ -23,17 +23,24 @@ export class HttpServer {
 
     // bindings
     container.bind<BaseLogger>(TYPES.logger).toConstantValue(baseLogger);
-    
-    container.bind<IPersonHandlers>(TYPES.personHandlers).toConstantValue(new PersonHandlers(baseLogger, neo4jClient));
 
-    const server = new InversifyExpressServer(container, null, { rootPath: config.servers.http.basePath });
+    container
+      .bind<IPersonHandlers>(TYPES.personHandlers)
+      .toConstantValue(new PersonHandlers(baseLogger, neo4jClient));
+
+    const server = new InversifyExpressServer(container, null, {
+      rootPath: config.servers.http.basePath,
+    });
 
     return server
       .setConfig(middlewares({ logger: baseLogger }))
       .setErrorConfig(errors({ logger: baseLogger }))
       .build()
       .listen(config.servers.http.port, () => {
-        baseLogger.info({ port: config.servers.http.port }, 'The HTTP server is running');
+        baseLogger.info(
+          { port: config.servers.http.port },
+          'The HTTP server is running',
+        );
       });
   }
 }

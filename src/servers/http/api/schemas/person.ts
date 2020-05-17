@@ -14,7 +14,8 @@ export const personGetAllSchema = joi.object().keys({
 });
 
 export const personDeleteSchema = joi.object().keys({
-  id: joi.string()
+  id: joi
+    .string()
     .guid({ version: ['uuidv4', 'uuidv5'] })
     .required(),
 });

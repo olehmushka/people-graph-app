@@ -9,13 +9,11 @@ export class App {
       user: config.neo4j.user,
       password: config.neo4j.password,
     });
-    
+
     const dependencies = {
       neo4jSession: session,
     };
 
-    return Promise.all([
-      HttpServer.start(dependencies),
-    ]);
+    return Promise.all([HttpServer.start(dependencies)]);
   }
 }

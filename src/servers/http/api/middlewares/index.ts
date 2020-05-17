@@ -18,10 +18,12 @@ export default ({ logger }: IDependencies) => (app: Application): void => {
     serve,
     swagger(logger) as RequestHandler,
   );
-  app.use(bodyParser.json())
+  app.use(bodyParser.json());
 };
 
-export const errors = ({ logger }: IDependencies) => (app: Application): void => {
+export const errors = ({ logger }: IDependencies) => (
+  app: Application,
+): void => {
   app.use(notFound);
   app.use(errorHandling(logger));
 };

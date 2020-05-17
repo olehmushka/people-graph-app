@@ -32,7 +32,7 @@ export abstract class HttpError extends Error implements IHttpError {
 
     const { output } = this.create(args[0]);
 
-    this.payload = output.payload; 
+    this.payload = output.payload;
   }
 
   public getPayload(): IInfoPayload {

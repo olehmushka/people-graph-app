@@ -1,10 +1,22 @@
-import { interfaces, controller, httpPost, httpGet, httpDelete, request, response } from 'inversify-express-utils';
+import {
+  interfaces,
+  controller,
+  httpPost,
+  httpGet,
+  httpDelete,
+  request,
+  response,
+} from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { Request, Response } from 'express';
 import status from 'http-status';
 import { TYPES } from '../../ioc/types';
 import { IPersonHandlers } from '../../../../core/handlers';
-import { personCreateSchema, personGetAllSchema, personDeleteSchema } from '../schemas';
+import {
+  personCreateSchema,
+  personGetAllSchema,
+  personDeleteSchema,
+} from '../schemas';
 
 @controller('/person')
 export class PersonController implements interfaces.Controller {
@@ -13,7 +25,10 @@ export class PersonController implements interfaces.Controller {
   ) {}
 
   @httpPost('/')
-  public async  createOne(@request() req: Request, @response() res: Response): Promise<void> {
+  public async createOne(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
     const person = await personCreateSchema.validateAsync(req.body);
     const r = await this.personHandler.createOne(person.data);
     res.status(status.CREATED).json({
@@ -23,7 +38,10 @@ export class PersonController implements interfaces.Controller {
   }
 
   @httpGet('/')
-  public async  getAll(@request() req: Request, @response() res: Response): Promise<void> {
+  public async getAll(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
     const { skip, limit } = await personGetAllSchema.validateAsync(req.query);
     const data = await this.personHandler.getAll({ skip, limit });
     res.status(status.OK).json({
@@ -33,7 +51,10 @@ export class PersonController implements interfaces.Controller {
   }
 
   @httpDelete('/:id')
-  public async  deleteOne(@request() req: Request, @response() res: Response): Promise<void> {
+  public async deleteOne(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
     const { id } = await personDeleteSchema.validateAsync(req.params);
     await this.personHandler.deleteOne(id);
     res.sendStatus(status.NO_CONTENT);
