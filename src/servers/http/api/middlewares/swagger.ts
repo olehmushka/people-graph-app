@@ -1,13 +1,13 @@
 import { setup } from 'swagger-ui-express';
 import { BaseLogger } from 'pino';
 import { RequestHandler } from 'express';
-import config from '../../../../config';
+import config from '../../../../../config';
 
 export default (logger: BaseLogger): RequestHandler => {
 
   const options = {
     swaggerOptions: {
-      url: `${config.httpServer.swaggerBasePath.replace(/\/$/gm, '')}/swagger.json`,
+      url: `${config.servers.http.swaggerBasePath.replace(/\/$/gm, '')}/swagger.json`,
     }
   };
 

@@ -7,14 +7,14 @@ import notFound from './404-handling';
 import errorHandling from './error-handling';
 import bodyParser from 'body-parser';
 import logRequestParams from './log-request-params';
-import config from '../../../../config';
+import config from '../../../../../config';
 import path from 'path';
 
 export default ({ logger }: IDependencies) => (app: Application): void => {
   app.use(logRequestParams(logger));
   app.use(logRequestTime(logger));
   app.use(
-    path.resolve(`${config.httpServer.basePath}`, 'swagger-ui'),
+    path.resolve(`${config.servers.http.basePath}`, 'swagger-ui'),
     serve,
     swagger(logger) as RequestHandler,
   );

@@ -1,0 +1,156 @@
+swagger: '2.0'
+
+info:
+  title: People Graph HTTP Server API
+  description: Endpoints for getting data by browser client
+  version: 0.0.0
+
+consumes:
+  - application/json
+
+produces:
+  - application/json
+
+paths:
+  /healthcheck:
+    get:
+      tags:
+        - system
+      summary: Returns 200 OK response if server is working
+      responses:
+        200:
+          description: data about health of the system
+          schema:
+            type: object
+            properties:
+              timestamp:
+                type: dateTime
+              data:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: '0.0.0'
+                  message:
+                    type: string
+                    example: 'ok'
+
+  /person:
+    post:
+      tags:
+        - person
+      summary: Create new person
+      parameters:
+        - in: body
+          name: user
+          schema:
+            $ref: '#/definitions/PersonCreateRequest'
+      responses:
+        201:
+          description: person was created successfully
+          schema:
+            $ref: '#/definitions/PersonCreateResponse'
+
+    get:
+      tags:
+        - person
+      summary: Get many persons
+      parameters:
+        - name: limit
+          in: query
+          description: How many persons to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: number
+        - name: skip
+          in: query
+          description: How many persons should be skipped
+          required: false
+          schema:
+            type: integer
+            format: number
+      responses:
+        "200":
+          description: A paged array of persons
+          content:
+            application/json:    
+              schema:
+                $ref: '#/definitions/GetAllPersonsResponse'
+
+  /person/{personId}:
+    delete:
+      tags:
+        - person
+      summary: Delete person
+      parameters:
+        - in: path
+          name: personId
+          required: true
+          type: string
+      responses:
+        204:
+          description: person was deleted successfully
+
+definitions:
+  PersonCreateRequest:
+    type: object
+    required:
+    - data
+    properties:
+      data:
+        type: object
+        required:
+        - firstName
+        - lastName
+        properties:
+          firstName:
+            type: string
+          lastName:
+            type: string
+          birthday:
+            type: dateTime
+
+  PersonCreateResponse:
+    type: object
+    required:
+    - timestamp
+    - data
+    properties:
+      timestamp:
+        type: dateTime
+      data:
+        type: object
+        required:
+        - firstName
+        - lastName
+        properties:
+          firstName:
+            type: string
+          lastName:
+            type: string
+          birthday:
+            type: dateTime
+
+  GetAllPersonsResponse:
+    type: object
+    required:
+    - timestamp
+    - data
+    properties:
+      timestamp:
+        type: dateTime
+      data:
+        type: array
+        items:
+          type: object
+          required:
+          - firstName
+          - lastName
+          properties:
+            firstName:
+              type: string
+            lastName:
+              type: string
+            birthday:
+              type: dateTime
