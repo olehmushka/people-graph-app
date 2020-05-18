@@ -1,4 +1,5 @@
 import { HttpServer } from './servers/http';
+import { GrpcServer } from './servers/grpc';
 import { createSession } from './core/modules/neo4j';
 import config from '../config';
 
@@ -14,6 +15,9 @@ export class App {
       neo4jSession: session,
     };
 
-    return Promise.all([HttpServer.start(dependencies)]);
+    return Promise.all([
+      HttpServer.start(dependencies),
+      GrpcServer.start(dependencies),
+    ]);
   }
 }

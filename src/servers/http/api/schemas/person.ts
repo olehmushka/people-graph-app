@@ -4,7 +4,7 @@ export const personCreateSchema = joi.object().keys({
   data: joi.object({
     firstName: joi.string().required(),
     lastName: joi.string().required(),
-    birthday: joi.date().iso(),
+    birthday: joi.date().iso().required(),
   }),
 });
 

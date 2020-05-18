@@ -103,6 +103,7 @@ definitions:
         required:
         - firstName
         - lastName
+        - birthday
         properties:
           firstName:
             type: string

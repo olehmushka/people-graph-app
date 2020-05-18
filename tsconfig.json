@@ -12,6 +12,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
+    "allowJs": true,
     "strictNullChecks": true,
     "types": [ "node", "reflect-metadata", "jest" ],
     "resolveJsonModule": true,
@@ -30,7 +31,7 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
+    "src/**/*",
     "index.ts"
   ],
   "exclude": [

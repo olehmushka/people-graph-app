@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option go_package = ".;person";
+
+package person;
+
+service Person {
+  rpc createOne(CreateOneRequest) returns (CreateOneResponse) {}
+  rpc getAll(GetAllRequest) returns (GetAllResponse) {}
+  rpc deleteOne(DeleteOneRequest) returns (DeleteOneResponse) {}
+}
+
+// createOne
+message CreateOneRequest {
+  message CreateOneRequestData {
+    string firstName = 1;
+    string lastName = 2;
+    string birthday = 3;
+  }
+  CreateOneRequestData data = 1;
+}
+
+message CreateOneResponse {
+  message CreateOneResponseData {
+    string id = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string birthday = 4;
+    repeated string phoneNumbers = 5;
+  }
+  CreateOneResponseData data = 1;
+  string timestamp = 2;
+}
+
+// getAll
+message GetAllRequest {
+  int64 limit = 1;
+  int64 skip = 2;
+}
+
+message GetAllResponse {
+  message GetAllResponseData {
+    string id = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string birthday = 4;
+    repeated string phoneNumbers = 5;
+  }
+  repeated GetAllResponseData data = 1;
+  string timestamp = 2;
+}
+
+// deleteOne
+message DeleteOneRequest {
+  string id = 1;
+}
+
+message DeleteOneResponse {}
