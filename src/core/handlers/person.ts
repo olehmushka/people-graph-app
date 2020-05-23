@@ -53,7 +53,8 @@ export class PersonHandlers implements IPersonHandlers {
       )
       .then((records) =>
         records.map((r) => this.parsePersonNode(r.get('p.properties'))),
-      );
+      )
+      .catch(this.errorHandle);
   }
 
   public async deleteOne(id: string): Promise<void> {
@@ -66,7 +67,9 @@ export class PersonHandlers implements IPersonHandlers {
     }
   }
 
-  private parsePersonNode(p: any): IPerson {
+  private parsePersonNode(p: {
+    [key: string]: string | number | any;
+  }): IPerson {
     const birthday = moment()
       .set({
         year: get(p, 'birthday.year.low'),
@@ -103,5 +106,5 @@ export const getPersonHandler = ({
   logger,
   neo4jClient,
   postgresClient,
-}: IPersonHandlerConfig) =>
+}: IPersonHandlerConfig): PersonHandlers =>
   new PersonHandlers(logger, neo4jClient, postgresClient);

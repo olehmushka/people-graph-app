@@ -10,8 +10,11 @@ module.exports = {
   testEnvironment: 'node',
   modulePathIgnorePatterns: [
     'src/index.ts',
-    'src/api/controllers/index.ts',
-    'src/api/middlewares/index.ts'
+    'src/core/handlers/index.ts',
+    'src/core/interfaces/index.ts',
+    'src/servers/http/index.ts',
+    'src/servers/http/api/controllers/index.ts',
+    'src/servers/http/api/middlewares/index.ts'
   ],
   coverageThreshold: {
     global: {
