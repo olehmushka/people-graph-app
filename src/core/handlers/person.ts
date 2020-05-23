@@ -30,13 +30,12 @@ export class PersonHandlers implements IPersonHandlers {
         id: require('uuid').v4(),
         ...basePerson,
       };
-      const p = this.parseBasePerson(person);
       await this.neo4jClient.run(
         'CREATE (p:Person {' +
-          `id: "${p.id}", ` +
-          `firstName: "${p.firstName}", ` +
-          `lastName: "${p.lastName}", ` +
-          `birthday: datetime("${p.birthday}")` +
+          `id: "${person.id}", ` +
+          `firstName: "${person.firstName}", ` +
+          `lastName: "${person.lastName}", ` +
+          `birthday: datetime("${moment(person.birthday).format()}")` +
           '}) ' +
           'RETURN p',
       );
@@ -47,41 +46,14 @@ export class PersonHandlers implements IPersonHandlers {
     }
   }
 
-  private parseBasePerson(basePerson: IBasePerson): { [key: string]: string } {
-    return {
-      firstName: basePerson.firstName,
-      lastName: basePerson.lastName,
-      birthday: moment(basePerson.birthday).format(),
-    };
-  }
-
   public async getAll(params: IPersonHandlersGetAllParams): Promise<IPerson[]> {
     return this.neo4jClient
       .run(
         `MATCH (p:Person) RETURN p SKIP ${params.skip} LIMIT ${params.limit}`,
       )
-      .then((records) => {
-        return records.map((r) => {
-          const { properties: p } = r.get('p');
-          const birthday = moment()
-            .set({
-              year: get(p, 'birthday.year.low'),
-              month: get(p, 'birthday.month.low'),
-              date: get(p, 'birthday.day.low'),
-
-              hour: get(p, 'birthday.hour.low'),
-              minute: get(p, 'birthday.minute.low'),
-              second: get(p, 'birthday.second.low'),
-            })
-            .toDate();
-          const person = {
-            birthday,
-            ...pick(p, ['id', 'firstName', 'lastName']),
-          };
-
-          return person;
-        });
-      });
+      .then((records) =>
+        records.map((r) => this.parsePersonNode(r.get('p.properties'))),
+      );
   }
 
   public async deleteOne(id: string): Promise<void> {
@@ -92,6 +64,25 @@ export class PersonHandlers implements IPersonHandlers {
     } catch (error) {
       return this.errorHandle(error);
     }
+  }
+
+  private parsePersonNode(p: any): IPerson {
+    const birthday = moment()
+      .set({
+        year: get(p, 'birthday.year.low'),
+        month: get(p, 'birthday.month.low'),
+        date: get(p, 'birthday.day.low'),
+
+        hour: get(p, 'birthday.hour.low'),
+        minute: get(p, 'birthday.minute.low'),
+        second: get(p, 'birthday.second.low'),
+      })
+      .toDate();
+
+    return {
+      birthday,
+      ...pick(p, ['id', 'firstName', 'lastName']),
+    };
   }
 
   private errorHandle(error: any): Promise<any> {

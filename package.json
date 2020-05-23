@@ -21,8 +21,7 @@
     "start": "node -r dotenv/config .",
     "start:dev": "nodemon -e ts,json -i dist -i tests -i reports -x \"npm start\" | pino-pretty -t HH:MM:ss",
     "test": "jest",
-    "test:coverage": "jest --coverage",
-    "test:integration": ""
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@grpc/proto-loader": "0.5.4",

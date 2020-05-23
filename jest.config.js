@@ -23,18 +23,18 @@ module.exports = {
   },
   collectCoverageFrom: ['src/**/*.ts'],
   reporters: [
-    "default",
+    'default',
     [
-      "jest-junit",
+      'jest-junit',
       {
-        "suiteName": "jest tests",
-        "outputDirectory": "<rootDir>/reports/unit",
-        "outputName": "junit.xml",
-        "uniqueOutputName": "false",
-        "classNameTemplate": "{classname}-{title}",
-        "titleTemplate": "{classname}-{title}",
-        "ancestorSeparator": " › ",
-        "suiteNameTemplate": "{filename}"
+        suiteName: 'jest tests',
+        outputDirectory: '<rootDir>/reports/unit',
+        outputName: 'junit.xml',
+        uniqueOutputName: 'false',
+        classNameTemplate: '{classname}-{title}',
+        titleTemplate: '{classname}-{title}',
+        ancestorSeparator: ' › ',
+        suiteNameTemplate: '{filename}'
       }
     ]
   ]
