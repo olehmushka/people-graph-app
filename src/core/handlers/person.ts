@@ -3,6 +3,7 @@ import moment from 'moment';
 import get from 'lodash/get';
 import pick from 'lodash/pick';
 import { INeo4jClient } from '../modules/neo4j';
+import { IPostgresClient } from '../modules/postgres';
 import { IBasePerson, IPerson } from '../interfaces';
 
 export interface IPersonHandlers {
@@ -17,7 +18,11 @@ export interface IPersonHandlersGetAllParams {
 }
 
 export class PersonHandlers implements IPersonHandlers {
-  constructor(private logger: BaseLogger, private neo4jClient: INeo4jClient) {}
+  constructor(
+    private logger: BaseLogger,
+    private neo4jClient: INeo4jClient,
+    private postgresClient: IPostgresClient,
+  ) {}
 
   public async createOne(basePerson: IBasePerson): Promise<IPerson> {
     try {
@@ -31,8 +36,7 @@ export class PersonHandlers implements IPersonHandlers {
           `id: "${p.id}", ` +
           `firstName: "${p.firstName}", ` +
           `lastName: "${p.lastName}", ` +
-          `birthday: datetime("${p.birthday}"), ` +
-          `phoneNumbers: []` +
+          `birthday: datetime("${p.birthday}")` +
           '}) ' +
           'RETURN p',
       );
@@ -72,7 +76,7 @@ export class PersonHandlers implements IPersonHandlers {
             .toDate();
           const person = {
             birthday,
-            ...pick(p, ['id', 'firstName', 'lastName', 'phoneNumbers']),
+            ...pick(p, ['id', 'firstName', 'lastName']),
           };
 
           return person;

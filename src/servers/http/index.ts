@@ -4,21 +4,28 @@ import { Server } from 'http';
 import { Container } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { Session } from 'neo4j-driver';
+import { Client } from 'pg';
 import './api/controllers';
 import config from '../../../config';
 import { TYPES } from './ioc/types';
 import middlewares, { errors } from './api/middlewares';
 import { Neo4jClient } from '../../core/modules/neo4j';
+import { PostgresClient } from '../../core/modules/postgres';
 import { PersonHandlers, IPersonHandlers } from '../../core/handlers';
 
 export interface IHttpServerDependencies {
   neo4jSession: Session;
+  postgresConnection: Client;
 }
 
 export class HttpServer {
   static async start(dependencies: IHttpServerDependencies): Promise<Server> {
     const baseLogger = logger({ level: config.logger.level });
     const neo4jClient = new Neo4jClient(baseLogger, dependencies.neo4jSession);
+    const postgresClient = new PostgresClient(
+      baseLogger,
+      dependencies.postgresConnection,
+    );
     const container = new Container();
 
     // bindings
@@ -26,7 +33,9 @@ export class HttpServer {
 
     container
       .bind<IPersonHandlers>(TYPES.personHandlers)
-      .toConstantValue(new PersonHandlers(baseLogger, neo4jClient));
+      .toConstantValue(
+        new PersonHandlers(baseLogger, neo4jClient, postgresClient),
+      );
 
     const server = new InversifyExpressServer(container, null, {
       rootPath: config.servers.http.basePath,

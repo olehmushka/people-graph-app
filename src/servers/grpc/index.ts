@@ -1,13 +1,16 @@
 import { Server, ServerCredentials } from 'grpc';
 import { Session } from 'neo4j-driver';
+import { Client } from 'pg';
 import logger from 'pino';
 import person from './handlers/person';
 import config from '../../../config';
 import { PersonHandlers } from '../../core/handlers';
 import { Neo4jClient } from '../../core/modules/neo4j';
+import { PostgresClient } from '../../core/modules/postgres';
 
 export interface IGrpcServerDependencies {
   neo4jSession: Session;
+  postgresConnection: Client;
 }
 
 export class GrpcServer {
@@ -15,12 +18,16 @@ export class GrpcServer {
     const server = new Server();
     const baseLogger = logger({ level: config.logger.level });
     const neo4jClient = new Neo4jClient(baseLogger, dependencies.neo4jSession);
+    const postgresClient = new PostgresClient(
+      baseLogger,
+      dependencies.postgresConnection,
+    );
 
     server.addService(
       person.service,
       new person.handler(
         baseLogger,
-        new PersonHandlers(baseLogger, neo4jClient),
+        new PersonHandlers(baseLogger, neo4jClient, postgresClient),
       ),
     );
 
