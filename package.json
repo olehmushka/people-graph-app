@@ -1,6 +1,6 @@
 {
   "name": "people-graph-app",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "app for building graph with people",
   "main": "dist/index.js",
   "repository": "https://github.com/olehmushka/people-graph-app",

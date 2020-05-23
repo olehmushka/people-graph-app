@@ -101,3 +101,16 @@ export class PersonHandlers implements IPersonHandlers {
     return Promise.reject(error);
   }
 }
+
+export interface IPersonHandlerConfig {
+  logger: BaseLogger;
+  neo4jClient: INeo4jClient;
+  postgresClient: IPostgresClient;
+}
+
+export const getPersonHandler = ({
+  logger,
+  neo4jClient,
+  postgresClient,
+}: IPersonHandlerConfig) =>
+  new PersonHandlers(logger, neo4jClient, postgresClient);

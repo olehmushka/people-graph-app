@@ -11,7 +11,7 @@ import { TYPES } from './ioc/types';
 import middlewares, { errors } from './api/middlewares';
 import { Neo4jClient } from '../../core/modules/neo4j';
 import { PostgresClient } from '../../core/modules/postgres';
-import { PersonHandlers, IPersonHandlers } from '../../core/handlers';
+import { getPersonHandler, IPersonHandlers } from '../../core/handlers';
 
 export interface IHttpServerDependencies {
   neo4jSession: Session;
@@ -34,7 +34,7 @@ export class HttpServer {
     container
       .bind<IPersonHandlers>(TYPES.personHandlers)
       .toConstantValue(
-        new PersonHandlers(baseLogger, neo4jClient, postgresClient),
+        getPersonHandler({ logger: baseLogger, neo4jClient, postgresClient }),
       );
 
     const server = new InversifyExpressServer(container, null, {

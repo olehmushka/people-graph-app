@@ -4,7 +4,7 @@ import { Client } from 'pg';
 import logger from 'pino';
 import person from './handlers/person';
 import config from '../../../config';
-import { PersonHandlers } from '../../core/handlers';
+import { getPersonHandler } from '../../core/handlers';
 import { Neo4jClient } from '../../core/modules/neo4j';
 import { PostgresClient } from '../../core/modules/postgres';
 
@@ -27,7 +27,7 @@ export class GrpcServer {
       person.service,
       new person.handler(
         baseLogger,
-        new PersonHandlers(baseLogger, neo4jClient, postgresClient),
+        getPersonHandler({ logger: baseLogger, neo4jClient, postgresClient }),
       ),
     );
 
