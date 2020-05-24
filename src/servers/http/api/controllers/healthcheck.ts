@@ -3,21 +3,21 @@ import {
   controller,
   httpGet,
   request,
+  response,
 } from 'inversify-express-utils';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { version } from '../../../../../package.json';
 
 @controller('/healthcheck')
 export class HealthCheckController implements interfaces.Controller {
   @httpGet('/')
-  public get(@request() req: Request): IControllerResponse {
-    const timestamp = new Date();
-    return {
+  public get(@request() _req: Request, @response() res: Response): void {
+    res.json({
       data: {
         version,
         status: 'ok',
       },
-      timestamp,
-    };
+      timestamp: new Date(),
+    });
   }
 }

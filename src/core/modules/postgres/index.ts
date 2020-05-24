@@ -37,20 +37,27 @@ export interface IPostgresClient {
 }
 
 export class PostgresClient implements IPostgresClient {
+  private static instance: PostgresClient;
   constructor(
     private readonly logger: BaseLogger,
     private readonly client: NativePostgresClient,
-  ) {}
+  ) {
+    PostgresClient.instance = this;
+  }
 
   public query(query: string, values?: any[]): Promise<any> {
-    return this.client
+    const self = this === undefined ? PostgresClient.instance : this;
+
+    return self.client
       .query(query, values)
-      .then(this.buildResponse)
-      .catch(this.errorHandler);
+      .then(self.buildResponse)
+      .catch(self.errorHandler);
   }
 
   public end(): Promise<void> {
-    return this.client.end();
+    const self = this === undefined ? PostgresClient.instance : this;
+
+    return self.client.end();
   }
 
   private buildResponse(data: QueryResult<any>): any {
@@ -58,7 +65,8 @@ export class PostgresClient implements IPostgresClient {
   }
 
   private errorHandler(error: any): never {
-    this.logger.error(error, 'Postrges query error');
+    const self = this === undefined ? PostgresClient.instance : this;
+    self.logger.error(error, 'Postrges query error');
     throw error;
   }
 }

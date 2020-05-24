@@ -30,9 +30,10 @@ export class PersonController implements interfaces.Controller {
     @response() res: Response,
   ): Promise<void> {
     const person = await personCreateSchema.validateAsync(req.body);
-    const r = await this.personHandler.createOne(person.data);
+    const data = await this.personHandler.createOne(person.data);
+
     res.status(status.CREATED).json({
-      data: r,
+      data,
       timestamp: new Date(),
     });
   }
@@ -44,6 +45,7 @@ export class PersonController implements interfaces.Controller {
   ): Promise<void> {
     const { skip, limit } = await personGetAllSchema.validateAsync(req.query);
     const data = await this.personHandler.getAll({ skip, limit });
+
     res.status(status.OK).json({
       data,
       timestamp: new Date(),
@@ -57,6 +59,7 @@ export class PersonController implements interfaces.Controller {
   ): Promise<void> {
     const { id } = await personDeleteSchema.validateAsync(req.params);
     await this.personHandler.deleteOne(id);
+
     res.sendStatus(status.NO_CONTENT);
   }
 }
