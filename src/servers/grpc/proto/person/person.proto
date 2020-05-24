@@ -26,7 +26,6 @@ message CreateOneResponse {
     string firstName = 2;
     string lastName = 3;
     string birthday = 4;
-    repeated string phoneNumbers = 5;
   }
   CreateOneResponseData data = 1;
   string timestamp = 2;
@@ -44,7 +43,6 @@ message GetAllResponse {
     string firstName = 2;
     string lastName = 3;
     string birthday = 4;
-    repeated string phoneNumbers = 5;
   }
   repeated GetAllResponseData data = 1;
   string timestamp = 2;

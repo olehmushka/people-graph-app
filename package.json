@@ -1,6 +1,6 @@
 {
   "name": "people-graph-app",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "app for building graph with people",
   "main": "dist/index.js",
   "repository": "https://github.com/olehmushka/people-graph-app",
@@ -22,6 +22,10 @@
     "start:dev": "nodemon -e ts,json -i dist -i tests -i reports -x \"npm start\" | pino-pretty -t HH:MM:ss",
     "test": "jest",
     "test:coverage": "jest --coverage",
+
+    "run-create-one-person": "node -r dotenv/config ./dist/src/core/clients/grpc/person/create-one.js",
+    "run-get-all-person": "node -r dotenv/config ./dist/src/core/clients/grpc/person/get-all.js",
+    "run-delete-one-person": "node -r dotenv/config ./dist/src/core/clients/grpc/person/delete-one.js",
 
     "create-tables": "node -r dotenv/config ./dist/scripts/migrations/create-tables.js",
     "drop-tables": "node -r dotenv/config ./dist/scripts/migrations/drop-tables.js"

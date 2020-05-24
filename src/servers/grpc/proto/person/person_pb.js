@@ -528,19 +528,12 @@ proto.person.CreateOneResponse.serializeBinaryToWriter = function(message, write
  * @constructor
  */
 proto.person.CreateOneResponse.CreateOneResponseData = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.person.CreateOneResponse.CreateOneResponseData.repeatedFields_, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
 goog.inherits(proto.person.CreateOneResponse.CreateOneResponseData, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   proto.person.CreateOneResponse.CreateOneResponseData.displayName = 'proto.person.CreateOneResponse.CreateOneResponseData';
 }
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.person.CreateOneResponse.CreateOneResponseData.repeatedFields_ = [5];
-
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -573,8 +566,7 @@ proto.person.CreateOneResponse.CreateOneResponseData.toObject = function(include
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
     firstname: jspb.Message.getFieldWithDefault(msg, 2, ""),
     lastname: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    birthday: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    phonenumbersList: jspb.Message.getRepeatedField(msg, 5)
+    birthday: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -626,10 +618,6 @@ proto.person.CreateOneResponse.CreateOneResponseData.deserializeBinaryFromReader
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setBirthday(value);
-      break;
-    case 5:
-      var value = /** @type {string} */ (reader.readString());
-      msg.addPhonenumbers(value);
       break;
     default:
       reader.skipField();
@@ -685,13 +673,6 @@ proto.person.CreateOneResponse.CreateOneResponseData.serializeBinaryToWriter = f
   if (f.length > 0) {
     writer.writeString(
       4,
-      f
-    );
-  }
-  f = message.getPhonenumbersList();
-  if (f.length > 0) {
-    writer.writeRepeatedString(
-      5,
       f
     );
   }
@@ -755,35 +736,6 @@ proto.person.CreateOneResponse.CreateOneResponseData.prototype.getBirthday = fun
 /** @param {string} value */
 proto.person.CreateOneResponse.CreateOneResponseData.prototype.setBirthday = function(value) {
   jspb.Message.setProto3StringField(this, 4, value);
-};
-
-
-/**
- * repeated string phoneNumbers = 5;
- * @return {!Array<string>}
- */
-proto.person.CreateOneResponse.CreateOneResponseData.prototype.getPhonenumbersList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
-};
-
-
-/** @param {!Array<string>} value */
-proto.person.CreateOneResponse.CreateOneResponseData.prototype.setPhonenumbersList = function(value) {
-  jspb.Message.setField(this, 5, value || []);
-};
-
-
-/**
- * @param {string} value
- * @param {number=} opt_index
- */
-proto.person.CreateOneResponse.CreateOneResponseData.prototype.addPhonenumbers = function(value, opt_index) {
-  jspb.Message.addToRepeatedField(this, 5, value, opt_index);
-};
-
-
-proto.person.CreateOneResponse.CreateOneResponseData.prototype.clearPhonenumbersList = function() {
-  this.setPhonenumbersList([]);
 };
 
 
@@ -1162,19 +1114,12 @@ proto.person.GetAllResponse.serializeBinaryToWriter = function(message, writer) 
  * @constructor
  */
 proto.person.GetAllResponse.GetAllResponseData = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.person.GetAllResponse.GetAllResponseData.repeatedFields_, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
 goog.inherits(proto.person.GetAllResponse.GetAllResponseData, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   proto.person.GetAllResponse.GetAllResponseData.displayName = 'proto.person.GetAllResponse.GetAllResponseData';
 }
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.person.GetAllResponse.GetAllResponseData.repeatedFields_ = [5];
-
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -1207,8 +1152,7 @@ proto.person.GetAllResponse.GetAllResponseData.toObject = function(includeInstan
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
     firstname: jspb.Message.getFieldWithDefault(msg, 2, ""),
     lastname: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    birthday: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    phonenumbersList: jspb.Message.getRepeatedField(msg, 5)
+    birthday: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -1260,10 +1204,6 @@ proto.person.GetAllResponse.GetAllResponseData.deserializeBinaryFromReader = fun
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setBirthday(value);
-      break;
-    case 5:
-      var value = /** @type {string} */ (reader.readString());
-      msg.addPhonenumbers(value);
       break;
     default:
       reader.skipField();
@@ -1319,13 +1259,6 @@ proto.person.GetAllResponse.GetAllResponseData.serializeBinaryToWriter = functio
   if (f.length > 0) {
     writer.writeString(
       4,
-      f
-    );
-  }
-  f = message.getPhonenumbersList();
-  if (f.length > 0) {
-    writer.writeRepeatedString(
-      5,
       f
     );
   }
@@ -1389,35 +1322,6 @@ proto.person.GetAllResponse.GetAllResponseData.prototype.getBirthday = function(
 /** @param {string} value */
 proto.person.GetAllResponse.GetAllResponseData.prototype.setBirthday = function(value) {
   jspb.Message.setProto3StringField(this, 4, value);
-};
-
-
-/**
- * repeated string phoneNumbers = 5;
- * @return {!Array<string>}
- */
-proto.person.GetAllResponse.GetAllResponseData.prototype.getPhonenumbersList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
-};
-
-
-/** @param {!Array<string>} value */
-proto.person.GetAllResponse.GetAllResponseData.prototype.setPhonenumbersList = function(value) {
-  jspb.Message.setField(this, 5, value || []);
-};
-
-
-/**
- * @param {string} value
- * @param {number=} opt_index
- */
-proto.person.GetAllResponse.GetAllResponseData.prototype.addPhonenumbers = function(value, opt_index) {
-  jspb.Message.addToRepeatedField(this, 5, value, opt_index);
-};
-
-
-proto.person.GetAllResponse.GetAllResponseData.prototype.clearPhonenumbersList = function() {
-  this.setPhonenumbersList([]);
 };
 
 

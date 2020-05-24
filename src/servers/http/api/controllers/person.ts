@@ -16,7 +16,7 @@ import {
   personCreateSchema,
   personGetAllSchema,
   personDeleteSchema,
-} from '../schemas';
+} from '../../../schemas';
 
 @controller('/person')
 export class PersonController implements interfaces.Controller {

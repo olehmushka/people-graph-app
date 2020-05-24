@@ -127,11 +127,6 @@ export namespace CreateOneResponse {
     getBirthday(): string;
     setBirthday(value: string): void;
 
-    clearPhonenumbersList(): void;
-    getPhonenumbersList(): Array<string>;
-    setPhonenumbersList(value: Array<string>): void;
-    addPhonenumbers(value: string, index?: number): string;
-
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): CreateOneResponseData.AsObject;
     static toObject(
@@ -159,7 +154,6 @@ export namespace CreateOneResponse {
       firstname: string;
       lastname: string;
       birthday: string;
-      phonenumbersList: Array<string>;
     };
   }
 }
@@ -251,11 +245,6 @@ export namespace GetAllResponse {
     getBirthday(): string;
     setBirthday(value: string): void;
 
-    clearPhonenumbersList(): void;
-    getPhonenumbersList(): Array<string>;
-    setPhonenumbersList(value: Array<string>): void;
-    addPhonenumbers(value: string, index?: number): string;
-
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): GetAllResponseData.AsObject;
     static toObject(
@@ -283,7 +272,6 @@ export namespace GetAllResponse {
       firstname: string;
       lastname: string;
       birthday: string;
-      phonenumbersList: Array<string>;
     };
   }
 }

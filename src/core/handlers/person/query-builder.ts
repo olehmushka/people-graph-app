@@ -31,11 +31,11 @@ export class PersonNeo4jQueryBuilder implements IPersonQueryBuilder {
 
 export class PersonPostgresQueryBuilder implements IPersonQueryBuilder {
   createOne(person: IPerson): string {
+    const birthday = moment(person.birthday).format();
+
     return `
-    INSERT INTO persons (id, firstName, lastName, birthday) 
-    VALUES ('${person.id}', '${person.firstName}', '${
-      person.lastName
-    }', '${moment(person.birthday).format()}');
+INSERT INTO persons (id, first_name, last_name, birthday)
+VALUES ('${person.id}', '${person.firstName}', '${person.lastName}', '${birthday}');
     `;
   }
 

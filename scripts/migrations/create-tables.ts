@@ -13,8 +13,8 @@ const main = async (): Promise<void> => {
   client.query(`
   CREATE TABLE IF NOT EXISTS persons (
     id varchar(128) PRIMARY KEY,
-    firstName varchar(255) NOT NULL,
-    lastName varchar(255) NOT NULL,
+    first_name varchar(255) NOT NULL,
+    last_name varchar(255) NOT NULL,
     birthday date
   );
   CREATE UNIQUE INDEX persons_id_inx ON persons(id);

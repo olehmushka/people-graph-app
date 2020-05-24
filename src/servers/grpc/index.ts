@@ -2,7 +2,7 @@ import { Server, ServerCredentials } from 'grpc';
 import { Session } from 'neo4j-driver';
 import { Client } from 'pg';
 import logger from 'pino';
-import person from './handlers/person';
+import * as person from './handlers/person';
 import config from '../../../config';
 import { getPersonHandler } from '../../core/handlers';
 import { Neo4jClient } from '../../core/modules/neo4j';
@@ -14,7 +14,7 @@ export interface IGrpcServerDependencies {
 }
 
 export class GrpcServer {
-  static async start(dependencies: IGrpcServerDependencies): Promise<any> {
+  static async start(dependencies: IGrpcServerDependencies): Promise<void> {
     const server = new Server();
     const baseLogger = logger({ level: config.logger.level });
     const neo4jClient = new Neo4jClient(baseLogger, dependencies.neo4jSession);
@@ -25,10 +25,14 @@ export class GrpcServer {
 
     server.addService(
       person.service,
-      new person.handler(
-        baseLogger,
-        getPersonHandler({ logger: baseLogger, neo4jClient, postgresClient }),
-      ),
+      person.getHandler({
+        logger: baseLogger,
+        personHandler: getPersonHandler({
+          logger: baseLogger,
+          neo4jClient,
+          postgresClient,
+        }),
+      }),
     );
 
     server.bindAsync(
@@ -38,11 +42,13 @@ export class GrpcServer {
         if (error) {
           const { message, stack } = error;
           baseLogger.error({ stack }, message);
+
           return;
         }
         baseLogger.info({ port }, 'The gRPC server is running');
       },
     );
+
     return server.start();
   }
 }
