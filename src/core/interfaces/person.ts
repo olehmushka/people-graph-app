@@ -7,3 +7,8 @@ export interface IBasePerson {
 export interface IPerson extends IBasePerson {
   id: string;
 }
+
+export interface IPersonHandlersGetAllParams {
+  skip: number;
+  limit: number;
+}

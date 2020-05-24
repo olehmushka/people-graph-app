@@ -2,9 +2,18 @@ import { BaseLogger } from 'pino';
 import moment from 'moment';
 import get from 'lodash/get';
 import pick from 'lodash/pick';
-import { INeo4jClient } from '../modules/neo4j';
-import { IPostgresClient } from '../modules/postgres';
-import { IBasePerson, IPerson } from '../interfaces';
+import { INeo4jClient } from '../../modules/neo4j';
+import { IPostgresClient } from '../../modules/postgres';
+import {
+  IPersonQueryBuilder,
+  PersonNeo4jQueryBuilder,
+  PersonPostgresQueryBuilder,
+} from './query-builder';
+import {
+  IBasePerson,
+  IPerson,
+  IPersonHandlersGetAllParams,
+} from '../../interfaces';
 
 export interface IPersonHandlers {
   createOne(person: IBasePerson): Promise<IPerson>;
@@ -12,58 +21,64 @@ export interface IPersonHandlers {
   deleteOne(id: string): Promise<void>;
 }
 
-export interface IPersonHandlersGetAllParams {
-  skip: number;
-  limit: number;
-}
-
 export class PersonHandlers implements IPersonHandlers {
+  private static instance: PersonHandlers;
   constructor(
     private logger: BaseLogger,
     private neo4jClient: INeo4jClient,
     private postgresClient: IPostgresClient,
-  ) {}
+    private neo4jQueryBuilder: IPersonQueryBuilder,
+    private postgresQueryBuilder: IPersonQueryBuilder,
+  ) {
+    PersonHandlers.instance = this;
+  }
 
   public async createOne(basePerson: IBasePerson): Promise<IPerson> {
+    const self = this === undefined ? PersonHandlers.instance : this;
+
     try {
       const person: IPerson = {
         id: require('uuid').v4(),
         ...basePerson,
       };
-      await this.neo4jClient.run(
-        'CREATE (p:Person {' +
-          `id: "${person.id}", ` +
-          `firstName: "${person.firstName}", ` +
-          `lastName: "${person.lastName}", ` +
-          `birthday: datetime("${moment(person.birthday).format()}")` +
-          '}) ' +
-          'RETURN p',
-      );
+      await Promise.all([
+        self.neo4jClient.run(self.neo4jQueryBuilder.createOne(person)),
+        self.postgresClient.query(self.postgresQueryBuilder.createOne(person)),
+      ]);
 
       return person;
     } catch (error) {
-      return this.errorHandle(error);
+      return self.errorHandle(error);
     }
   }
 
   public async getAll(params: IPersonHandlersGetAllParams): Promise<IPerson[]> {
-    return this.neo4jClient
-      .run(
-        `MATCH (p:Person) RETURN p SKIP ${params.skip} LIMIT ${params.limit}`,
-      )
-      .then((records) =>
-        records.map((r) => this.parsePersonNode(r.get('p.properties'))),
-      )
-      .catch(this.errorHandle);
+    const self = this === undefined ? PersonHandlers.instance : this;
+
+    try {
+      const records = await self.neo4jClient.run(
+        self.neo4jQueryBuilder.getAll(params),
+      );
+      const persons = records.map((r) =>
+        self.parsePersonNode(r.get('p')?.properties),
+      );
+
+      return persons;
+    } catch (error) {
+      return self.errorHandle(error);
+    }
   }
 
   public async deleteOne(id: string): Promise<void> {
+    const self = this === undefined ? PersonHandlers.instance : this;
+
     try {
-      await this.neo4jClient.run(
-        `MATCH (p:Person {id: "${id}"}) ` + 'DELETE p',
-      );
+      await Promise.all([
+        self.neo4jClient.run(self.neo4jQueryBuilder.deleteOne(id)),
+        self.postgresClient.query(self.postgresQueryBuilder.deleteOne(id)),
+      ]);
     } catch (error) {
-      return this.errorHandle(error);
+      return self.errorHandle(error);
     }
   }
 
@@ -89,8 +104,10 @@ export class PersonHandlers implements IPersonHandlers {
   }
 
   private errorHandle(error: any): Promise<any> {
+    const self = this === undefined ? PersonHandlers.instance : this;
+
     const { stack, message } = error;
-    this.logger.error({ stack }, message);
+    self.logger.error({ stack }, message);
 
     return Promise.reject(error);
   }
@@ -107,4 +124,10 @@ export const getPersonHandler = ({
   neo4jClient,
   postgresClient,
 }: IPersonHandlerConfig): PersonHandlers =>
-  new PersonHandlers(logger, neo4jClient, postgresClient);
+  new PersonHandlers(
+    logger,
+    neo4jClient,
+    postgresClient,
+    new PersonNeo4jQueryBuilder(),
+    new PersonPostgresQueryBuilder(),
+  );
