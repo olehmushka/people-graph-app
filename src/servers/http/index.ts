@@ -9,6 +9,7 @@ import './api/controllers';
 import config from '../../../config';
 import { TYPES } from './ioc/types';
 import middlewares, { errors } from './api/middlewares';
+import { PersonMapper, IPersonMapper } from './api/mappers';
 import { Neo4jClient } from '../../core/modules/neo4j';
 import { PostgresClient } from '../../core/modules/postgres';
 import { getPersonHandler, IPersonHandlers } from '../../core/handlers';
@@ -36,6 +37,11 @@ export class HttpServer {
       .toConstantValue(
         getPersonHandler({ logger: baseLogger, neo4jClient, postgresClient }),
       );
+
+    container
+      .bind<IPersonMapper>(TYPES.personMapper)
+      .to(PersonMapper)
+      .inSingletonScope();
 
     const server = new InversifyExpressServer(container, null, {
       rootPath: config.servers.http.basePath,

@@ -17,11 +17,14 @@ import {
   personGetAllSchema,
   personDeleteSchema,
 } from '../../../schemas';
+import { IPersonMapper } from '../mappers';
+import { API } from '../models/schema';
 
 @controller('/person')
 export class PersonController implements interfaces.Controller {
   constructor(
     @inject(TYPES.personHandlers) private personHandler: IPersonHandlers,
+    @inject(TYPES.personMapper) private personMapper: IPersonMapper,
   ) {}
 
   @httpPost('/')
@@ -29,13 +32,17 @@ export class PersonController implements interfaces.Controller {
     @request() req: Request,
     @response() res: Response,
   ): Promise<void> {
-    const person = await personCreateSchema.validateAsync(req.body);
-    const data = await this.personHandler.createOne(person.data);
+    const request: API.PersonCreateOneRequest = await personCreateSchema.validateAsync(
+      req.body as API.PersonCreateOneRequest,
+    );
+    const result = await this.personHandler.createOne(
+      this.personMapper.requestCreateOne(request),
+    );
+    const response: API.PersonCreateOneResponse = this.personMapper.responseCreateOne(
+      result,
+    );
 
-    res.status(status.CREATED).json({
-      data,
-      timestamp: new Date(),
-    });
+    res.status(status.CREATED).json(response);
   }
 
   @httpGet('/')
@@ -44,12 +51,12 @@ export class PersonController implements interfaces.Controller {
     @response() res: Response,
   ): Promise<void> {
     const { skip, limit } = await personGetAllSchema.validateAsync(req.query);
-    const data = await this.personHandler.getAll({ skip, limit });
+    const result = await this.personHandler.getAll({ skip, limit });
+    const response: API.GetAllPersonsResponse = this.personMapper.responseGetAll(
+      result,
+    );
 
-    res.status(status.OK).json({
-      data,
-      timestamp: new Date(),
-    });
+    res.status(status.OK).json(response);
   }
 
   @httpDelete('/:id')
@@ -59,7 +66,8 @@ export class PersonController implements interfaces.Controller {
   ): Promise<void> {
     const { id } = await personDeleteSchema.validateAsync(req.params);
     await this.personHandler.deleteOne(id);
+    const response: API.PersonDeleteOneResponse = this.personMapper.responseDeleteOne();
 
-    res.sendStatus(status.NO_CONTENT);
+    res.sendStatus(status.OK).json(response);
   }
 }

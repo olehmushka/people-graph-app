@@ -85,17 +85,15 @@ export class PersonHandlers implements IPersonHandlers {
   private parsePersonNode(p: {
     [key: string]: string | number | any;
   }): IPerson {
-    const birthday = moment()
-      .set({
-        year: get(p, 'birthday.year.low'),
-        month: get(p, 'birthday.month.low'),
-        date: get(p, 'birthday.day.low'),
+    const birthday = moment().set({
+      year: get(p, 'birthday.year.low'),
+      month: get(p, 'birthday.month.low'),
+      date: get(p, 'birthday.day.low'),
 
-        hour: get(p, 'birthday.hour.low'),
-        minute: get(p, 'birthday.minute.low'),
-        second: get(p, 'birthday.second.low'),
-      })
-      .toDate();
+      hour: get(p, 'birthday.hour.low'),
+      minute: get(p, 'birthday.minute.low'),
+      second: get(p, 'birthday.second.low'),
+    });
 
     return {
       birthday,

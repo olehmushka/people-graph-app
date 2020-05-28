@@ -6,8 +6,10 @@ import {
   personGetAllSchema,
   personDeleteSchema,
 } from '../../../schemas';
+import { PersonMapper, IPersonMapper } from './mapper';
 import * as pb from '../../proto/person/person_pb';
 import * as gpb from '../../proto/person/person_grpc_pb';
+import config from '../../../../../config';
 
 export const service = gpb.PersonService;
 
@@ -15,6 +17,7 @@ export class PersonHandler implements gpb.IPersonServer {
   constructor(
     private logger: BaseLogger,
     private personHandler: IPersonHandlers,
+    private personMapper: IPersonMapper,
   ) {}
 
   public async createOne(
@@ -22,26 +25,16 @@ export class PersonHandler implements gpb.IPersonServer {
     callback: sendUnaryData<pb.CreateOneResponse>,
   ): Promise<void> {
     try {
-      const requestData = call.request.getData();
-      const person = await personCreateSchema.validateAsync({
+      const person = this.personMapper.requestCreateOne(call);
+      await personCreateSchema.validateAsync({
         data: {
-          firstName: requestData?.getFirstname(),
-          lastName: requestData?.getLastname(),
-          birthday: requestData?.getBirthday(),
+          ...person,
+          birthday: person.birthday.format(config.formats.datetime),
         },
       });
 
-      const data = await this.personHandler.createOne(person.data);
-
-      const response = new pb.CreateOneResponse();
-      const responseData = new pb.CreateOneResponse.CreateOneResponseData();
-      responseData.setId(data.id);
-      responseData.setFirstname(data.firstName);
-      responseData.setLastname(data.lastName);
-      responseData.setBirthday(data.birthday.toISOString());
-      response.setData(responseData);
-
-      response.setTimestamp(new Date().toISOString());
+      const result = await this.personHandler.createOne(person);
+      const response = this.personMapper.responseCreateOne(result);
 
       callback(null, response);
     } catch (error) {
@@ -55,26 +48,12 @@ export class PersonHandler implements gpb.IPersonServer {
     callback: sendUnaryData<pb.GetAllResponse>,
   ): Promise<void> {
     try {
-      const params = await personGetAllSchema.validateAsync({
-        limit: call.request.getLimit(),
-        skip: call.request.getSkip(),
-      });
+      const params = await personGetAllSchema.validateAsync(
+        this.personMapper.requestGetAll(call),
+      );
 
       const persons = await this.personHandler.getAll(params);
-
-      const response = new pb.GetAllResponse();
-      const responseData = persons.map((person) => {
-        const data = new pb.GetAllResponse.GetAllResponseData();
-        data.setId(person.id);
-        data.setFirstname(person.firstName);
-        data.setLastname(person.lastName);
-        data.setBirthday(person.birthday.toISOString());
-
-        return data;
-      });
-      response.setDataList(responseData);
-
-      response.setTimestamp(new Date().toISOString());
+      const response = this.personMapper.responseGetAll(persons);
 
       callback(null, response);
     } catch (error) {
@@ -89,12 +68,11 @@ export class PersonHandler implements gpb.IPersonServer {
   ): Promise<void> {
     try {
       const { id } = await personDeleteSchema.validateAsync({
-        id: call.request.getId(),
+        id: this.personMapper.requestDeleteOne(call),
       });
 
       await this.personHandler.deleteOne(id);
-
-      const response = new pb.DeleteOneResponse();
+      const response = this.personMapper.responseDeleteOne();
 
       callback(null, response);
     } catch (error) {
@@ -114,4 +92,4 @@ export const getHandler = ({
   logger,
   personHandler,
 }: IPersonGrpcHandlerConfig): PersonHandler =>
-  new PersonHandler(logger, personHandler);
+  new PersonHandler(logger, personHandler, new PersonMapper());

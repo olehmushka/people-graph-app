@@ -1,4 +1,5 @@
 import { BaseLogger } from 'pino';
+import moment from 'moment';
 import faker from 'faker';
 import omit from 'lodash/omit';
 import { PersonHandlers } from '..';
@@ -42,7 +43,7 @@ describe('PersonHandlers test', () => {
     const basePerson = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
-      birthday: faker.date.past(),
+      birthday: moment(faker.date.past()),
     };
     const result = await ph.createOne(basePerson);
     expect(omit(result, ['id'])).toEqual(basePerson);

@@ -44,12 +44,12 @@ paths:
         - in: body
           name: user
           schema:
-            $ref: '#/definitions/PersonCreateRequest'
+            $ref: '#/definitions/PersonCreateOneRequest'
       responses:
         201:
           description: person was created successfully
           schema:
-            $ref: '#/definitions/PersonCreateResponse'
+            $ref: '#/definitions/PersonCreateOneResponse'
 
     get:
       tags:
@@ -89,11 +89,19 @@ paths:
           required: true
           type: string
       responses:
-        204:
-          description: person was deleted successfully
+        "200":
+          description: A paged array of persons
+          content:
+            application/json:    
+              schema:
+                $ref: '#/definitions/PersonDeleteOneResponse'
 
 definitions:
-  PersonCreateRequest:
+  DateTime:
+    type: string
+    format: date-time
+
+  PersonCreateOneRequest:
     type: object
     required:
     - data
@@ -110,28 +118,33 @@ definitions:
           lastName:
             type: string
           birthday:
-            type: dateTime
+            $ref: '#/definitions/DateTime'
 
-  PersonCreateResponse:
+  PersonCreateOneResponse:
     type: object
     required:
     - timestamp
     - data
     properties:
       timestamp:
-        type: dateTime
+        $ref: '#/definitions/DateTime'
       data:
         type: object
         required:
+        - id
         - firstName
         - lastName
+        - birthday
         properties:
+          id:
+            type: string
+            format: uuid
           firstName:
             type: string
           lastName:
             type: string
           birthday:
-            type: dateTime
+            $ref: '#/definitions/DateTime'
 
   GetAllPersonsResponse:
     type: object
@@ -140,18 +153,39 @@ definitions:
     - data
     properties:
       timestamp:
-        type: dateTime
+        $ref: '#/definitions/DateTime'
       data:
         type: array
         items:
           type: object
           required:
+          - id
           - firstName
           - lastName
+          - birthday
           properties:
+            id:
+              type: string
+              format: uuid
             firstName:
               type: string
             lastName:
               type: string
             birthday:
-              type: dateTime
+              $ref: '#/definitions/DateTime'
+
+  PersonDeleteOneResponse:
+    type: object
+    required:
+    - timestamp
+    - data
+    properties:
+      timestamp:
+        $ref: '#/definitions/DateTime'
+      data:
+        type: object
+        required:
+        - status
+        properties:
+          status:
+            type: string

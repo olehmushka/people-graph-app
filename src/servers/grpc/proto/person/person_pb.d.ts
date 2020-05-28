@@ -308,6 +308,14 @@ export namespace DeleteOneRequest {
 }
 
 export class DeleteOneResponse extends jspb.Message {
+  hasData(): boolean;
+  clearData(): void;
+  getData(): DeleteOneResponse.DeleteOneResponseData | undefined;
+  setData(value?: DeleteOneResponse.DeleteOneResponseData): void;
+
+  getTimestamp(): string;
+  setTimestamp(value: string): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): DeleteOneResponse.AsObject;
   static toObject(
@@ -330,5 +338,39 @@ export class DeleteOneResponse extends jspb.Message {
 }
 
 export namespace DeleteOneResponse {
-  export type AsObject = {};
+  export type AsObject = {
+    data?: DeleteOneResponse.DeleteOneResponseData.AsObject;
+    timestamp: string;
+  };
+
+  export class DeleteOneResponseData extends jspb.Message {
+    getStatus(): string;
+    setStatus(value: string): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): DeleteOneResponseData.AsObject;
+    static toObject(
+      includeInstance: boolean,
+      msg: DeleteOneResponseData,
+    ): DeleteOneResponseData.AsObject;
+    static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
+    static extensionsBinary: {
+      [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
+    };
+    static serializeBinaryToWriter(
+      message: DeleteOneResponseData,
+      writer: jspb.BinaryWriter,
+    ): void;
+    static deserializeBinary(bytes: Uint8Array): DeleteOneResponseData;
+    static deserializeBinaryFromReader(
+      message: DeleteOneResponseData,
+      reader: jspb.BinaryReader,
+    ): DeleteOneResponseData;
+  }
+
+  export namespace DeleteOneResponseData {
+    export type AsObject = {
+      status: string;
+    };
+  }
 }

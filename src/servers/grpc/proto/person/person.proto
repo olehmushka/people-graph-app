@@ -53,4 +53,10 @@ message DeleteOneRequest {
   string id = 1;
 }
 
-message DeleteOneResponse {}
+message DeleteOneResponse {
+  message DeleteOneResponseData {
+    string status = 1;
+  }
+  DeleteOneResponseData data = 1;
+  string timestamp = 2;
+}

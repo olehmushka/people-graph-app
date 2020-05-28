@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { IPerson, IPersonHandlersGetAllParams } from '../../interfaces';
+import config from '../../../../config';
 
 export interface IPersonQueryBuilder {
   createOne(person: IPerson): string;
@@ -14,7 +14,9 @@ export class PersonNeo4jQueryBuilder implements IPersonQueryBuilder {
       `id: "${person.id}", ` +
       `firstName: "${person.firstName}", ` +
       `lastName: "${person.lastName}", ` +
-      `birthday: datetime("${moment(person.birthday).format()}")` +
+      `birthday: datetime("${person.birthday.format(
+        config.formats.datetime,
+      )}")` +
       '}) ' +
       'RETURN p'
     );
@@ -31,7 +33,7 @@ export class PersonNeo4jQueryBuilder implements IPersonQueryBuilder {
 
 export class PersonPostgresQueryBuilder implements IPersonQueryBuilder {
   createOne(person: IPerson): string {
-    const birthday = moment(person.birthday).format();
+    const birthday = person.birthday.format(config.formats.datetime);
 
     return `
 INSERT INTO persons (id, first_name, last_name, birthday)
@@ -40,7 +42,7 @@ VALUES ('${person.id}', '${person.firstName}', '${person.lastName}', '${birthday
   }
 
   getAll(params: IPersonHandlersGetAllParams): string {
-    return '';
+    return `SELECT * FROM persons LIMIT ${params.limit} OFFSET ${params.skip};`;
   }
 
   deleteOne(id: string): string {

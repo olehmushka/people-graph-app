@@ -1,10 +1,13 @@
-import * as joi from '@hapi/joi';
+import * as j from '@hapi/joi';
+import config from '../../../config';
+
+const joi = j.extend(require('@hapi/joi-date')); // eslint-disable-line @typescript-eslint/no-var-requires
 
 export const personCreateSchema = joi.object().keys({
   data: joi.object({
     firstName: joi.string().required(),
     lastName: joi.string().required(),
-    birthday: joi.date().iso().required(),
+    birthday: joi.date().format(config.formats.datetime).required(),
   }),
 });
 

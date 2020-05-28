@@ -5,6 +5,9 @@ export interface IConfig {
   logger: {
     level: string;
   };
+  formats: {
+    datetime: string;
+  };
   servers: {
     http: {
       port: number;
@@ -33,6 +36,9 @@ export default ((logger: BaseLogger): IConfig => {
   const configs = {
     logger: {
       level: process.env.LOG_LEVEL || 'info',
+    },
+    formats: {
+      datetime: process.env.DATETIME_FORMAT || 'YYYY-MM-DDTHH:mm:ssZ',
     },
     servers: {
       http: {

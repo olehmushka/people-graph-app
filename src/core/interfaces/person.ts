@@ -1,7 +1,9 @@
+import { Moment } from 'moment';
+
 export interface IBasePerson {
   firstName: string;
   lastName: string;
-  birthday: Date;
+  birthday: Moment;
 }
 
 export interface IPerson extends IBasePerson {

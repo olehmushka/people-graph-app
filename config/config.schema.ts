@@ -4,6 +4,9 @@ export const configSchema = joi.object().keys({
   logger: joi.object().keys({
     level: joi.string().valid('warn', 'debug', 'info', 'error').required(),
   }),
+  formats: joi.object().keys({
+    datetime: joi.string().required(),
+  }),
   servers: joi.object().keys({
     http: joi.object().keys({
       port: joi.number().integer().min(1024).max(65535).required(),
