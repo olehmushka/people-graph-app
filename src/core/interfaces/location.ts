@@ -30,4 +30,6 @@ export interface ILocationHandlersGetAllParams {
 }
 
 export interface ILocationHandlersGetAllCountriesParams
-  extends ILocationHandlersGetAllParams {}
+  extends ILocationHandlersGetAllParams {
+  countryName?: string;
+}

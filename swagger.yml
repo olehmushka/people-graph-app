@@ -116,6 +116,12 @@ paths:
           schema:
             type: integer
             format: number
+        - name: countryName
+          in: query
+          description: Search countries by name
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: A paged array of countries
