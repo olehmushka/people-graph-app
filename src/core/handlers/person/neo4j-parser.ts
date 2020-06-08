@@ -15,22 +15,20 @@ export class PersonNeo4jParser implements IPersonNeo4jParser {
     );
   }
 
-  private parsePersonNode(p: {
-    [key: string]: string | number | any;
-  }): IPerson {
+  private parsePersonNode(p: { [key: string]: string | number }): IPerson {
     const birthday = moment().set({
-      year: get(p, 'birthday.year.low'),
-      month: get(p, 'birthday.month.low'),
-      date: get(p, 'birthday.day.low'),
+      year: get(p, 'birthday.year.low') as number,
+      month: get(p, 'birthday.month.low') as number,
+      date: get(p, 'birthday.day.low') as number,
 
-      hour: get(p, 'birthday.hour.low'),
-      minute: get(p, 'birthday.minute.low'),
-      second: get(p, 'birthday.second.low'),
+      hour: get(p, 'birthday.hour.low') as number,
+      minute: get(p, 'birthday.minute.low') as number,
+      second: get(p, 'birthday.second.low') as number,
     });
 
     return {
       birthday,
-      ...pick(p, ['id', 'firstName', 'lastName']),
+      ...pick(p as { [key: string]: string }, ['id', 'firstName', 'lastName']),
     };
   }
 }

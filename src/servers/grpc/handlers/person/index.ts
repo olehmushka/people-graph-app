@@ -1,6 +1,7 @@
 import { ServerUnaryCall, sendUnaryData } from 'grpc';
 import { BaseLogger } from 'pino';
 import { IPersonHandlers } from '../../../../core/handlers';
+import { IPersonHandlersGetAllParams } from '../../../../core/interfaces';
 import {
   personCreateSchema,
   personGetAllSchema,
@@ -26,7 +27,7 @@ export class PersonHandler implements gpb.IPersonServer {
   ): Promise<void> {
     try {
       const person = this.personMapper.requestCreateOne(call);
-      await personCreateSchema.validateAsync({
+      await personCreateSchema.validate({
         data: {
           ...person,
           birthday: person.birthday.format(config.formats.datetime),
@@ -48,9 +49,9 @@ export class PersonHandler implements gpb.IPersonServer {
     callback: sendUnaryData<pb.GetAllResponse>,
   ): Promise<void> {
     try {
-      const params = await personGetAllSchema.validateAsync(
-        this.personMapper.requestGetAll(call),
-      );
+      const params = await personGetAllSchema.validate<
+        IPersonHandlersGetAllParams
+      >(this.personMapper.requestGetAll(call));
 
       const persons = await this.personHandler.getAll(params);
       const response = this.personMapper.responseGetAll(persons);
@@ -67,7 +68,7 @@ export class PersonHandler implements gpb.IPersonServer {
     callback: sendUnaryData<pb.DeleteOneResponse>,
   ): Promise<void> {
     try {
-      const { id } = await personDeleteSchema.validateAsync({
+      const { id } = await personDeleteSchema.validate({
         id: this.personMapper.requestDeleteOne(call),
       });
 

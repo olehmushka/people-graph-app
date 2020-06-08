@@ -78,7 +78,7 @@ export class PersonHandlers implements IPersonHandlers {
     }
   }
 
-  private errorHandle(error: any): Promise<any> {
+  private errorHandle<T extends Error>(error: T): Promise<T> {
     const self = this === undefined ? PersonHandlers.instance : this;
 
     const { stack, message } = error;

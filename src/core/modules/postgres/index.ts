@@ -64,7 +64,7 @@ export class PostgresClient implements IPostgresClient {
     return data;
   }
 
-  private errorHandler(error: any): never {
+  private errorHandler<T extends Error>(error: T): never {
     const self = this === undefined ? PostgresClient.instance : this;
     self.logger.error(error, 'Postrges query error');
     throw error;

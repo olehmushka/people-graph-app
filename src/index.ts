@@ -1,4 +1,5 @@
 import logger from 'pino';
+import { Server } from 'http';
 import { HttpServer } from './servers/http';
 import { GrpcServer } from './servers/grpc';
 import { createSession } from './core/modules/neo4j';
@@ -6,7 +7,7 @@ import { creatPostgresConnection } from './core/modules/postgres';
 import config from '../config';
 
 export class App {
-  public static async start() {
+  public static async start(): Promise<[Server, void]> {
     const session = createSession({
       uri: config.neo4j.uri,
       user: config.neo4j.user,

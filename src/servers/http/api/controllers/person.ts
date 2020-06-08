@@ -32,7 +32,7 @@ export class PersonController implements interfaces.Controller {
     @request() req: Request,
     @response() res: Response,
   ): Promise<void> {
-    const request: API.PersonCreateOneRequest = await personCreateSchema.validateAsync(
+    const request: API.PersonCreateOneRequest = await personCreateSchema.validate(
       req.body as API.PersonCreateOneRequest,
     );
     const result = await this.personHandler.createOne(
@@ -50,7 +50,7 @@ export class PersonController implements interfaces.Controller {
     @request() req: Request,
     @response() res: Response,
   ): Promise<void> {
-    const { skip, limit } = await personGetAllSchema.validateAsync(req.query);
+    const { skip, limit } = await personGetAllSchema.validate(req.query);
     const result = await this.personHandler.getAll({ skip, limit });
     const response: API.GetAllPersonsResponse = this.personMapper.responseGetAll(
       result,
@@ -64,7 +64,7 @@ export class PersonController implements interfaces.Controller {
     @request() req: Request,
     @response() res: Response,
   ): Promise<void> {
-    const { id } = await personDeleteSchema.validateAsync(req.params);
+    const { id } = await personDeleteSchema.validate(req.params);
     await this.personHandler.deleteOne(id);
     const response: API.PersonDeleteOneResponse = this.personMapper.responseDeleteOne();
 

@@ -26,11 +26,9 @@ export class LocationController implements interfaces.Controller {
     @request() req: Request,
     @response() res: Response,
   ): Promise<void> {
-    const {
-      skip,
-      limit,
-      countryName,
-    } = await locationGetAllSchema.validateAsync(req.query);
+    const { skip, limit, countryName } = await locationGetAllSchema.validate(
+      req.query,
+    );
     const result = await this.locationHandler.getAllCountries({
       skip,
       limit,

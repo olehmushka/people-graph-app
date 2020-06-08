@@ -49,7 +49,7 @@ export class LocationHandlers implements ILocationHandlers {
     }
   }
 
-  private errorHandle(error: any): Promise<any> {
+  private errorHandle<T extends Error>(error: T): Promise<T> {
     const self = this === undefined ? LocationHandlers.instance : this;
 
     const { stack, message } = error;

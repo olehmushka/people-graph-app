@@ -12,6 +12,9 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
+  "plugins": [
+    "unused-imports"
+  ],
   "rules": {
     "arrow-parens": "off",
     "indent": ["warn", 2],
@@ -24,6 +27,7 @@
       { "blankLine": "always", "prev": "if", "next": "if" }
     ],
     "quotes": [ "warn", "single"],
+    "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/interface-name-prefix": ["warn", "always"],
     "@typescript-eslint/no-empty-interface": "off"
   },
