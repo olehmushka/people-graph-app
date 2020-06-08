@@ -25,9 +25,7 @@ describe('postgres-module test', () => {
 
   test('run is succeed', async () => {
     const data = faker.random.objectElement();
-    nativePostgresClient.query.mockImplementation(
-      () => new Promise((resolve) => resolve(data)),
-    );
+    nativePostgresClient.query.mockImplementation(() => Promise.resolve(data));
 
     const postgresClient = new PostgresClient(
       (lg as unknown) as BaseLogger,
@@ -41,9 +39,7 @@ describe('postgres-module test', () => {
 
   test('run is failed', async () => {
     const error = new Error(faker.random.word());
-    nativePostgresClient.query.mockImplementation(
-      () => new Promise((_resolve, reject) => reject(error)),
-    );
+    nativePostgresClient.query.mockImplementation(() => Promise.reject(error));
 
     const postgresClient = new PostgresClient(
       (lg as unknown) as BaseLogger,

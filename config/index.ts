@@ -30,6 +30,18 @@ export interface IConfig {
     user: string;
     password: string;
   };
+  hosts: {
+    getCountries: string;
+    getLocation: string;
+  };
+  getLocation: {
+    apiToken: string;
+    userEmail: string;
+    accessTokenPath: string;
+    countriesPath: string;
+    statesPath: string;
+    citiesPath: string;
+  };
 }
 
 export default ((logger: BaseLogger): IConfig => {

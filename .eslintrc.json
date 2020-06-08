@@ -24,6 +24,15 @@
       { "blankLine": "always", "prev": "if", "next": "if" }
     ],
     "quotes": [ "warn", "single"],
-    "@typescript-eslint/interface-name-prefix": ["warn", "always"]
-  }
+    "@typescript-eslint/interface-name-prefix": ["warn", "always"],
+    "@typescript-eslint/no-empty-interface": "off"
+  },
+  "overrides": [
+    {
+     "files": ["*.spec.ts"],
+      "rules": {
+        "@typescript-eslint/camelcase": "off"
+      }
+    }
+   ]
 }

@@ -10,7 +10,7 @@ const main = async (): Promise<void> => {
   });
   const client = new PostgresClient(baseLogger, connection);
 
-  client.query(`
+  await client.query(`
   CREATE TABLE IF NOT EXISTS persons (
     id varchar(128) PRIMARY KEY,
     first_name varchar(255) NOT NULL,
@@ -32,6 +32,31 @@ const main = async (): Promise<void> => {
     value jsonb
   );
   CREATE UNIQUE INDEX person_properties_id_inx ON person_properties(id, person_id, person_property_category_id);
+  `);
+
+  await client.query(`
+  CREATE TABLE IF NOT EXISTS countries (
+    id varchar(128) PRIMARY KEY,
+    name varchar(150) UNIQUE NOT NULL,
+    alpha_two_code varchar(2) UNIQUE NOT NULL,
+    alpha_three_code varchar(3) UNIQUE NOT NULL,
+    phone_codes varchar(64) NOT NULL
+  );
+  CREATE UNIQUE INDEX countries_id_inx ON countries(id);
+
+  CREATE TABLE IF NOT EXISTS states (
+    id varchar(128) PRIMARY KEY,
+    name varchar(400) NOT NULL,
+    country_id varchar(128) NOT NULL REFERENCES countries(id)
+  );
+  CREATE UNIQUE INDEX states_id_inx ON states(id, country_id);
+
+  CREATE TABLE IF NOT EXISTS cities (
+    id varchar(128) PRIMARY KEY,
+    name varchar(400) NOT NULL,
+    state_id varchar(128) NOT NULL REFERENCES states(id)
+  );
+  CREATE UNIQUE INDEX cities_id_inx ON cities(id, state_id);
   `);
 };
 

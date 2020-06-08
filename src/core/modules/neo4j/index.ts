@@ -3,7 +3,6 @@ import {
   auth,
   Session,
   QueryResult,
-  Record,
   Neo4jError,
   Config,
 } from 'neo4j-driver';
@@ -16,7 +15,7 @@ export interface INeo4jConfig {
 }
 
 export interface INeo4jClient {
-  run(query: string, params?: { [key: string]: any }): Promise<Record[]>;
+  run(query: string, params?: { [key: string]: any }): Promise<QueryResult>;
 }
 
 export const createSession = (
@@ -41,7 +40,7 @@ export class Neo4jClient implements INeo4jClient {
   public run(
     query: string,
     params?: { [key: string]: any },
-  ): Promise<Record[]> {
+  ): Promise<QueryResult> {
     const self = this === undefined ? Neo4jClient.instance : this;
 
     return self.session
@@ -50,8 +49,8 @@ export class Neo4jClient implements INeo4jClient {
       .catch(self.errorHandler);
   }
 
-  private buildResponse(result: QueryResult): Record[] {
-    return result.records;
+  private buildResponse(result: QueryResult): QueryResult {
+    return result;
   }
 
   private errorHandler(error: any): never {

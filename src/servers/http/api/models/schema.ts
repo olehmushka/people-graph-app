@@ -39,4 +39,14 @@ export namespace API {
     lastName: string;
     birthday: string;
   }
+  export interface GetAllCountriesResponse {
+    timestamp: string;
+    data: GetAllCountriesResponseData[];
+  }
+  export interface GetAllCountriesResponseData {
+    id: string;
+    name: string;
+    alpha2Code: string;
+    alpha3Code: string;
+  }
 }

@@ -96,6 +96,34 @@ paths:
               schema:
                 $ref: '#/definitions/PersonDeleteOneResponse'
 
+  /location/country:
+    get:
+      tags:
+        - location
+      summary: Get many countries
+      parameters:
+        - name: limit
+          in: query
+          description: How many countries to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: number
+        - name: skip
+          in: query
+          description: How many countries should be skipped
+          required: false
+          schema:
+            type: integer
+            format: number
+      responses:
+        "200":
+          description: A paged array of countries
+          content:
+            application/json:    
+              schema:
+                $ref: '#/definitions/GetAllCountriesResponse'
+
 definitions:
   DateTime:
     type: string
@@ -189,3 +217,31 @@ definitions:
         properties:
           status:
             type: string
+
+  GetAllCountriesResponse:
+    type: object
+    required:
+    - timestamp
+    - data
+    properties:
+      timestamp:
+        $ref: '#/definitions/DateTime'
+      data:
+        type: array
+        items:
+          type: object
+          required:
+          - id
+          - name
+          - alpha2Code
+          - alpha3Code
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            alpha2Code:
+              type: string
+            alpha3Code:
+              type: string

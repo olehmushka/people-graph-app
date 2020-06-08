@@ -9,10 +9,20 @@ import './api/controllers';
 import config from '../../../config';
 import { TYPES } from './ioc/types';
 import middlewares, { errors } from './api/middlewares';
-import { PersonMapper, IPersonMapper } from './api/mappers';
+import {
+  PersonMapper,
+  IPersonMapper,
+  LocationMapper,
+  ILocationMapper,
+} from './api/mappers';
 import { Neo4jClient } from '../../core/modules/neo4j';
 import { PostgresClient } from '../../core/modules/postgres';
-import { getPersonHandler, IPersonHandlers } from '../../core/handlers';
+import {
+  getPersonHandler,
+  IPersonHandlers,
+  getLocationHandler,
+  ILocationHandlers,
+} from '../../core/handlers';
 
 export interface IHttpServerDependencies {
   neo4jSession: Session;
@@ -39,8 +49,19 @@ export class HttpServer {
       );
 
     container
+      .bind<ILocationHandlers>(TYPES.locationHandlers)
+      .toConstantValue(
+        getLocationHandler({ logger: baseLogger, postgresClient }),
+      );
+
+    container
       .bind<IPersonMapper>(TYPES.personMapper)
       .to(PersonMapper)
+      .inSingletonScope();
+
+    container
+      .bind<ILocationMapper>(TYPES.locationMapper)
+      .to(LocationMapper)
       .inSingletonScope();
 
     const server = new InversifyExpressServer(container, null, {

@@ -25,6 +25,10 @@ const qb = {
   deleteOne: jest.fn(),
 };
 
+const parser = {
+  getAll: jest.fn(),
+};
+
 describe('PersonHandlers test', () => {
   beforeEach(() => {
     defaultNeo4jClient.run.mockClear();
@@ -39,6 +43,7 @@ describe('PersonHandlers test', () => {
       defaultPostgresClient,
       qb,
       qb,
+      parser,
     );
     const basePerson = {
       firstName: faker.name.firstName(),
@@ -55,18 +60,15 @@ describe('PersonHandlers test', () => {
       lastName: faker.name.lastName(),
       birthday: faker.date.past(),
     };
-    defaultNeo4jClient.run.mockImplementation(
-      () =>
-        new Promise((resolve) =>
-          resolve([{ get: jest.fn(() => ({ properties: basePerson })) }]),
-        ),
-    );
+    defaultNeo4jClient.run.mockImplementation(() => Promise.resolve());
+    parser.getAll.mockImplementation(() => [basePerson]);
     const ph = new PersonHandlers(
       lg,
       defaultNeo4jClient,
       defaultPostgresClient,
       qb,
       qb,
+      parser,
     );
     const result = await ph.getAll({ skip: 0, limit: 0 });
     expect(omit(result[0], ['id', 'birthday'])).toEqual(
@@ -81,6 +83,7 @@ describe('PersonHandlers test', () => {
       defaultPostgresClient,
       qb,
       qb,
+      parser,
     );
     await ph.deleteOne(faker.random.uuid());
     expect(defaultNeo4jClient.run).toHaveBeenCalledTimes(1);

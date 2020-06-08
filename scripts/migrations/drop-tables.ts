@@ -14,6 +14,9 @@ const main = async (): Promise<void> => {
   DROP TABLE IF EXISTS persons CASCADE;
   DROP TABLE IF EXISTS person_property_categories CASCADE;
   DROP TABLE IF EXISTS person_properties CASCADE;
+  DROP TABLE IF EXISTS countries CASCADE;
+  DROP TABLE IF EXISTS states CASCADE;
+  DROP TABLE IF EXISTS cities CASCADE;
   `);
 };
 

@@ -1,7 +1,4 @@
 import { BaseLogger } from 'pino';
-import moment from 'moment';
-import get from 'lodash/get';
-import pick from 'lodash/pick';
 import { INeo4jClient } from '../../modules/neo4j';
 import { IPostgresClient } from '../../modules/postgres';
 import {
@@ -9,6 +6,7 @@ import {
   PersonNeo4jQueryBuilder,
   PersonPostgresQueryBuilder,
 } from './query-builder';
+import { PersonNeo4jParser, IPersonNeo4jParser } from './neo4j-parser';
 import {
   IBasePerson,
   IPerson,
@@ -29,6 +27,7 @@ export class PersonHandlers implements IPersonHandlers {
     private postgresClient: IPostgresClient,
     private neo4jQueryBuilder: IPersonQueryBuilder,
     private postgresQueryBuilder: IPersonQueryBuilder,
+    private neo4jParser: IPersonNeo4jParser,
   ) {
     PersonHandlers.instance = this;
   }
@@ -56,12 +55,9 @@ export class PersonHandlers implements IPersonHandlers {
     const self = this === undefined ? PersonHandlers.instance : this;
 
     try {
-      const records = await self.neo4jClient.run(
-        self.neo4jQueryBuilder.getAll(params),
-      );
-      const persons = records.map((r) =>
-        self.parsePersonNode(r.get('p')?.properties),
-      );
+      const persons = await self.neo4jClient
+        .run(self.neo4jQueryBuilder.getAll(params))
+        .then(self.neo4jParser.getAll);
 
       return persons;
     } catch (error) {
@@ -80,25 +76,6 @@ export class PersonHandlers implements IPersonHandlers {
     } catch (error) {
       return self.errorHandle(error);
     }
-  }
-
-  private parsePersonNode(p: {
-    [key: string]: string | number | any;
-  }): IPerson {
-    const birthday = moment().set({
-      year: get(p, 'birthday.year.low'),
-      month: get(p, 'birthday.month.low'),
-      date: get(p, 'birthday.day.low'),
-
-      hour: get(p, 'birthday.hour.low'),
-      minute: get(p, 'birthday.minute.low'),
-      second: get(p, 'birthday.second.low'),
-    });
-
-    return {
-      birthday,
-      ...pick(p, ['id', 'firstName', 'lastName']),
-    };
   }
 
   private errorHandle(error: any): Promise<any> {
@@ -128,4 +105,5 @@ export const getPersonHandler = ({
     postgresClient,
     new PersonNeo4jQueryBuilder(),
     new PersonPostgresQueryBuilder(),
+    new PersonNeo4jParser(),
   );

@@ -1,6 +1,6 @@
 {
   "name": "people-graph-app",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "app for building graph with people",
   "main": "dist/index.js",
   "repository": "https://github.com/olehmushka/people-graph-app",
@@ -22,15 +22,12 @@
     "start:dev": "nodemon -e ts,json -i dist -i tests -i reports -x \"npm start\" | pino-pretty -t HH:MM:ss",
     "test": "jest",
     "test:coverage": "jest --coverage",
-
     "http:generate:models": "./node_modules/@manifoldco/swagger-to-ts/bin/cli.js ./swagger.yml --wrapper \"export namespace API\" --camelcase -o src/servers/http/api/models/schema.ts",
     "http:clean:models": "rimraf src/models/models.d.ts",
-
     "grpc:generate:proto": "npx bash ./scripts/protoc.sh",
     "grpc:run-create-one-person": "node -r dotenv/config ./dist/src/core/clients/grpc/person/create-one.js",
     "grpc:run-get-all-person": "node -r dotenv/config ./dist/src/core/clients/grpc/person/get-all.js",
     "grpc:run-delete-one-person": "node -r dotenv/config ./dist/src/core/clients/grpc/person/delete-one.js",
-
     "sql:create-tables": "node -r dotenv/config ./dist/scripts/migrations/create-tables.js",
     "sql:drop-tables": "node -r dotenv/config ./dist/scripts/migrations/drop-tables.js"
   },
@@ -39,7 +36,6 @@
     "@hapi/boom": "8.0.1",
     "@hapi/joi": "17.1.1",
     "@hapi/joi-date": "^2.0.1",
-    "axios": "0.19.0",
     "dotenv": "8.1.0",
     "express": "4.17.1",
     "grpc": "1.24.2",

@@ -32,7 +32,7 @@ export const creatPostgresConnection = async (
 };
 
 export interface IPostgresClient {
-  query(query: string, values?: any[]): Promise<any>;
+  query<T>(query: string, values?: any[]): Promise<QueryResult<T>>;
   end(): Promise<void>;
 }
 
@@ -45,12 +45,12 @@ export class PostgresClient implements IPostgresClient {
     PostgresClient.instance = this;
   }
 
-  public query(query: string, values?: any[]): Promise<any> {
+  public query<T>(query: string, values?: any[]): Promise<QueryResult<T>> {
     const self = this === undefined ? PostgresClient.instance : this;
 
     return self.client
       .query(query, values)
-      .then(self.buildResponse)
+      .then((result) => self.buildResponse<T>(result))
       .catch(self.errorHandler);
   }
 
@@ -60,7 +60,7 @@ export class PostgresClient implements IPostgresClient {
     return self.client.end();
   }
 
-  private buildResponse(data: QueryResult<any>): any {
+  private buildResponse<T>(data: QueryResult<T>): QueryResult<T> {
     return data;
   }
 

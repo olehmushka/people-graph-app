@@ -1,5 +1,5 @@
 import { BaseLogger } from 'pino';
-import { Session, QueryResult, Neo4jError } from 'neo4j-driver';
+import { Session, Neo4jError } from 'neo4j-driver';
 import faker from 'faker';
 import { Neo4jClient } from '../';
 
@@ -25,12 +25,7 @@ describe('neo4j-module test', () => {
 
   test('run is succeed', async () => {
     const records = faker.random.objectElement();
-    defaultSession.run.mockImplementation(
-      () =>
-        new Promise((resolve) =>
-          resolve(({ records } as unknown) as QueryResult),
-        ),
-    );
+    defaultSession.run.mockImplementation(() => Promise.resolve(records));
     const neo4jClient = new Neo4jClient(
       (lg as unknown) as BaseLogger,
       (defaultSession as unknown) as Session,
@@ -42,9 +37,7 @@ describe('neo4j-module test', () => {
 
   test('run is fail', async () => {
     const error = new Neo4jError(faker.random.word());
-    defaultSession.run.mockImplementation(
-      () => new Promise((_resolve, reject) => reject(error)),
-    );
+    defaultSession.run.mockImplementation(() => Promise.reject(error));
     const neo4jClient = new Neo4jClient(
       (lg as unknown) as BaseLogger,
       (defaultSession as unknown) as Session,
