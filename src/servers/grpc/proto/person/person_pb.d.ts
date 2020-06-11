@@ -14,23 +14,14 @@ export class CreateOneRequest extends jspb.Message {
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateOneRequest.AsObject;
-  static toObject(
-    includeInstance: boolean,
-    msg: CreateOneRequest,
-  ): CreateOneRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateOneRequest): CreateOneRequest.AsObject;
   static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
   static extensionsBinary: {
     [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
   };
-  static serializeBinaryToWriter(
-    message: CreateOneRequest,
-    writer: jspb.BinaryWriter,
-  ): void;
+  static serializeBinaryToWriter(message: CreateOneRequest, writer: jspb.BinaryWriter): void;
   static deserializeBinary(bytes: Uint8Array): CreateOneRequest;
-  static deserializeBinaryFromReader(
-    message: CreateOneRequest,
-    reader: jspb.BinaryReader,
-  ): CreateOneRequest;
+  static deserializeBinaryFromReader(message: CreateOneRequest, reader: jspb.BinaryReader): CreateOneRequest;
 }
 
 export namespace CreateOneRequest {
@@ -50,23 +41,14 @@ export namespace CreateOneRequest {
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): CreateOneRequestData.AsObject;
-    static toObject(
-      includeInstance: boolean,
-      msg: CreateOneRequestData,
-    ): CreateOneRequestData.AsObject;
+    static toObject(includeInstance: boolean, msg: CreateOneRequestData): CreateOneRequestData.AsObject;
     static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
     static extensionsBinary: {
       [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
     };
-    static serializeBinaryToWriter(
-      message: CreateOneRequestData,
-      writer: jspb.BinaryWriter,
-    ): void;
+    static serializeBinaryToWriter(message: CreateOneRequestData, writer: jspb.BinaryWriter): void;
     static deserializeBinary(bytes: Uint8Array): CreateOneRequestData;
-    static deserializeBinaryFromReader(
-      message: CreateOneRequestData,
-      reader: jspb.BinaryReader,
-    ): CreateOneRequestData;
+    static deserializeBinaryFromReader(message: CreateOneRequestData, reader: jspb.BinaryReader): CreateOneRequestData;
   }
 
   export namespace CreateOneRequestData {
@@ -89,23 +71,14 @@ export class CreateOneResponse extends jspb.Message {
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateOneResponse.AsObject;
-  static toObject(
-    includeInstance: boolean,
-    msg: CreateOneResponse,
-  ): CreateOneResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateOneResponse): CreateOneResponse.AsObject;
   static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
   static extensionsBinary: {
     [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
   };
-  static serializeBinaryToWriter(
-    message: CreateOneResponse,
-    writer: jspb.BinaryWriter,
-  ): void;
+  static serializeBinaryToWriter(message: CreateOneResponse, writer: jspb.BinaryWriter): void;
   static deserializeBinary(bytes: Uint8Array): CreateOneResponse;
-  static deserializeBinaryFromReader(
-    message: CreateOneResponse,
-    reader: jspb.BinaryReader,
-  ): CreateOneResponse;
+  static deserializeBinaryFromReader(message: CreateOneResponse, reader: jspb.BinaryReader): CreateOneResponse;
 }
 
 export namespace CreateOneResponse {
@@ -129,18 +102,12 @@ export namespace CreateOneResponse {
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): CreateOneResponseData.AsObject;
-    static toObject(
-      includeInstance: boolean,
-      msg: CreateOneResponseData,
-    ): CreateOneResponseData.AsObject;
+    static toObject(includeInstance: boolean, msg: CreateOneResponseData): CreateOneResponseData.AsObject;
     static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
     static extensionsBinary: {
       [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
     };
-    static serializeBinaryToWriter(
-      message: CreateOneResponseData,
-      writer: jspb.BinaryWriter,
-    ): void;
+    static serializeBinaryToWriter(message: CreateOneResponseData, writer: jspb.BinaryWriter): void;
     static deserializeBinary(bytes: Uint8Array): CreateOneResponseData;
     static deserializeBinaryFromReader(
       message: CreateOneResponseData,
@@ -167,23 +134,14 @@ export class GetAllRequest extends jspb.Message {
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetAllRequest.AsObject;
-  static toObject(
-    includeInstance: boolean,
-    msg: GetAllRequest,
-  ): GetAllRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllRequest): GetAllRequest.AsObject;
   static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
   static extensionsBinary: {
     [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
   };
-  static serializeBinaryToWriter(
-    message: GetAllRequest,
-    writer: jspb.BinaryWriter,
-  ): void;
+  static serializeBinaryToWriter(message: GetAllRequest, writer: jspb.BinaryWriter): void;
   static deserializeBinary(bytes: Uint8Array): GetAllRequest;
-  static deserializeBinaryFromReader(
-    message: GetAllRequest,
-    reader: jspb.BinaryReader,
-  ): GetAllRequest;
+  static deserializeBinaryFromReader(message: GetAllRequest, reader: jspb.BinaryReader): GetAllRequest;
 }
 
 export namespace GetAllRequest {
@@ -197,33 +155,21 @@ export class GetAllResponse extends jspb.Message {
   clearDataList(): void;
   getDataList(): Array<GetAllResponse.GetAllResponseData>;
   setDataList(value: Array<GetAllResponse.GetAllResponseData>): void;
-  addData(
-    value?: GetAllResponse.GetAllResponseData,
-    index?: number,
-  ): GetAllResponse.GetAllResponseData;
+  addData(value?: GetAllResponse.GetAllResponseData, index?: number): GetAllResponse.GetAllResponseData;
 
   getTimestamp(): string;
   setTimestamp(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetAllResponse.AsObject;
-  static toObject(
-    includeInstance: boolean,
-    msg: GetAllResponse,
-  ): GetAllResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllResponse): GetAllResponse.AsObject;
   static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
   static extensionsBinary: {
     [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
   };
-  static serializeBinaryToWriter(
-    message: GetAllResponse,
-    writer: jspb.BinaryWriter,
-  ): void;
+  static serializeBinaryToWriter(message: GetAllResponse, writer: jspb.BinaryWriter): void;
   static deserializeBinary(bytes: Uint8Array): GetAllResponse;
-  static deserializeBinaryFromReader(
-    message: GetAllResponse,
-    reader: jspb.BinaryReader,
-  ): GetAllResponse;
+  static deserializeBinaryFromReader(message: GetAllResponse, reader: jspb.BinaryReader): GetAllResponse;
 }
 
 export namespace GetAllResponse {
@@ -247,23 +193,14 @@ export namespace GetAllResponse {
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): GetAllResponseData.AsObject;
-    static toObject(
-      includeInstance: boolean,
-      msg: GetAllResponseData,
-    ): GetAllResponseData.AsObject;
+    static toObject(includeInstance: boolean, msg: GetAllResponseData): GetAllResponseData.AsObject;
     static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
     static extensionsBinary: {
       [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
     };
-    static serializeBinaryToWriter(
-      message: GetAllResponseData,
-      writer: jspb.BinaryWriter,
-    ): void;
+    static serializeBinaryToWriter(message: GetAllResponseData, writer: jspb.BinaryWriter): void;
     static deserializeBinary(bytes: Uint8Array): GetAllResponseData;
-    static deserializeBinaryFromReader(
-      message: GetAllResponseData,
-      reader: jspb.BinaryReader,
-    ): GetAllResponseData;
+    static deserializeBinaryFromReader(message: GetAllResponseData, reader: jspb.BinaryReader): GetAllResponseData;
   }
 
   export namespace GetAllResponseData {
@@ -282,23 +219,14 @@ export class DeleteOneRequest extends jspb.Message {
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): DeleteOneRequest.AsObject;
-  static toObject(
-    includeInstance: boolean,
-    msg: DeleteOneRequest,
-  ): DeleteOneRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteOneRequest): DeleteOneRequest.AsObject;
   static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
   static extensionsBinary: {
     [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
   };
-  static serializeBinaryToWriter(
-    message: DeleteOneRequest,
-    writer: jspb.BinaryWriter,
-  ): void;
+  static serializeBinaryToWriter(message: DeleteOneRequest, writer: jspb.BinaryWriter): void;
   static deserializeBinary(bytes: Uint8Array): DeleteOneRequest;
-  static deserializeBinaryFromReader(
-    message: DeleteOneRequest,
-    reader: jspb.BinaryReader,
-  ): DeleteOneRequest;
+  static deserializeBinaryFromReader(message: DeleteOneRequest, reader: jspb.BinaryReader): DeleteOneRequest;
 }
 
 export namespace DeleteOneRequest {
@@ -318,23 +246,14 @@ export class DeleteOneResponse extends jspb.Message {
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): DeleteOneResponse.AsObject;
-  static toObject(
-    includeInstance: boolean,
-    msg: DeleteOneResponse,
-  ): DeleteOneResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteOneResponse): DeleteOneResponse.AsObject;
   static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
   static extensionsBinary: {
     [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
   };
-  static serializeBinaryToWriter(
-    message: DeleteOneResponse,
-    writer: jspb.BinaryWriter,
-  ): void;
+  static serializeBinaryToWriter(message: DeleteOneResponse, writer: jspb.BinaryWriter): void;
   static deserializeBinary(bytes: Uint8Array): DeleteOneResponse;
-  static deserializeBinaryFromReader(
-    message: DeleteOneResponse,
-    reader: jspb.BinaryReader,
-  ): DeleteOneResponse;
+  static deserializeBinaryFromReader(message: DeleteOneResponse, reader: jspb.BinaryReader): DeleteOneResponse;
 }
 
 export namespace DeleteOneResponse {
@@ -349,18 +268,12 @@ export namespace DeleteOneResponse {
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): DeleteOneResponseData.AsObject;
-    static toObject(
-      includeInstance: boolean,
-      msg: DeleteOneResponseData,
-    ): DeleteOneResponseData.AsObject;
+    static toObject(includeInstance: boolean, msg: DeleteOneResponseData): DeleteOneResponseData.AsObject;
     static extensions: { [key: number]: jspb.ExtensionFieldInfo<jspb.Message> };
     static extensionsBinary: {
       [key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>;
     };
-    static serializeBinaryToWriter(
-      message: DeleteOneResponseData,
-      writer: jspb.BinaryWriter,
-    ): void;
+    static serializeBinaryToWriter(message: DeleteOneResponseData, writer: jspb.BinaryWriter): void;
     static deserializeBinary(bytes: Uint8Array): DeleteOneResponseData;
     static deserializeBinaryFromReader(
       message: DeleteOneResponseData,

@@ -2,11 +2,7 @@ import { ServerUnaryCall, sendUnaryData } from 'grpc';
 import { BaseLogger } from 'pino';
 import { IPersonHandlers } from '../../../../core/handlers';
 import { IPersonHandlersGetAllParams } from '../../../../core/interfaces';
-import {
-  personCreateSchema,
-  personGetAllSchema,
-  personDeleteSchema,
-} from '../../../schemas';
+import { personCreateSchema, personGetAllSchema, personDeleteSchema } from '../../../schemas';
 import { PersonMapper, IPersonMapper } from './mapper';
 import * as pb from '../../proto/person/person_pb';
 import * as gpb from '../../proto/person/person_grpc_pb';
@@ -49,9 +45,9 @@ export class PersonHandler implements gpb.IPersonServer {
     callback: sendUnaryData<pb.GetAllResponse>,
   ): Promise<void> {
     try {
-      const params = await personGetAllSchema.validate<
-        IPersonHandlersGetAllParams
-      >(this.personMapper.requestGetAll(call));
+      const params = await personGetAllSchema.validate<IPersonHandlersGetAllParams>(
+        this.personMapper.requestGetAll(call),
+      );
 
       const persons = await this.personHandler.getAll(params);
       const response = this.personMapper.responseGetAll(persons);
@@ -89,8 +85,5 @@ export interface IPersonGrpcHandlerConfig {
   personHandler: IPersonHandlers;
 }
 
-export const getHandler = ({
-  logger,
-  personHandler,
-}: IPersonGrpcHandlerConfig): PersonHandler =>
+export const getHandler = ({ logger, personHandler }: IPersonGrpcHandlerConfig): PersonHandler =>
   new PersonHandler(logger, personHandler, new PersonMapper());

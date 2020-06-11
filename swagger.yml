@@ -71,7 +71,7 @@ paths:
             type: integer
             format: number
       responses:
-        "200":
+        200:
           description: A paged array of persons
           content:
             application/json:    
@@ -89,7 +89,7 @@ paths:
           required: true
           type: string
       responses:
-        "200":
+        200:
           description: A paged array of persons
           content:
             application/json:    
@@ -123,12 +123,30 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        200:
           description: A paged array of countries
           content:
             application/json:    
               schema:
                 $ref: '#/definitions/GetAllCountriesResponse'
+
+  /location/city/{cityId}:
+    get:
+      tags:
+        - location
+      summary: Get certain city
+      parameters:
+        - name: cityId
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Single city
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/GetOneCityResponse'
 
 definitions:
   DateTime:
@@ -224,6 +242,24 @@ definitions:
           status:
             type: string
 
+  Country:
+    type: object
+    required:
+    - id
+    - name
+    - alpha2Code
+    - alpha3Code
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+      alpha2Code:
+        type: string
+      alpha3Code:
+        type: string
+
   GetAllCountriesResponse:
     type: object
     required:
@@ -235,19 +271,39 @@ definitions:
       data:
         type: array
         items:
-          type: object
-          required:
-          - id
-          - name
-          - alpha2Code
-          - alpha3Code
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            alpha2Code:
-              type: string
-            alpha3Code:
-              type: string
+          $ref: '#/definitions/Country'
+
+  GetOneCityResponse:
+    type: object
+    required:
+    - timestamp
+    - data
+    properties:
+      timestamp:
+        $ref: '#/definitions/DateTime'
+      data:
+        type: object
+        required:
+        - id
+        - name
+        - state
+        - country
+        properties:
+          id:
+            type: string
+            format: uuid
+          name:
+            type: string
+          state:
+            type: object
+            required:
+            - id
+            - name
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+          country:
+            $ref: '#/definitions/Country'

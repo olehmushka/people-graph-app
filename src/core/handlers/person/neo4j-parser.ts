@@ -10,9 +10,7 @@ export interface IPersonNeo4jParser {
 
 export class PersonNeo4jParser implements IPersonNeo4jParser {
   public getAll(result: QueryResult): IPerson[] {
-    return result.records.map((r) =>
-      this.parsePersonNode(r.get('p')?.properties),
-    );
+    return result.records.map((r) => this.parsePersonNode(r.get('p')?.properties));
   }
 
   private parsePersonNode(p: { [key: string]: string | number }): IPerson {

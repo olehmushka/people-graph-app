@@ -13,33 +13,30 @@ const main = ({ limit, skip }: { [key: string]: string }): void => {
   request.setLimit(Number(limit));
   request.setSkip(Number(skip));
 
-  client.getAll(
-    request,
-    (error: ServiceError | null, response: pb.GetAllResponse): void => {
-      if (!isNil(error)) {
-        log.error(error, 'Person Client create one error');
+  client.getAll(request, (error: ServiceError | null, response: pb.GetAllResponse): void => {
+    if (!isNil(error)) {
+      log.error(error, 'Person Client create one error');
 
-        return;
-      }
+      return;
+    }
 
-      const responseDate = response.getDataList();
-      const data = responseDate.map((person) => ({
-        id: person?.getId(),
-        firstName: person?.getFirstname(),
-        lastName: person?.getLastname(),
-        birthday: person?.getBirthday(),
-      }));
-      const responseTimestamp = response.getTimestamp();
+    const responseDate = response.getDataList();
+    const data = responseDate.map((person) => ({
+      id: person?.getId(),
+      firstName: person?.getFirstname(),
+      lastName: person?.getLastname(),
+      birthday: person?.getBirthday(),
+    }));
+    const responseTimestamp = response.getTimestamp();
 
-      log.info(
-        {
-          data,
-          timestamp: responseTimestamp,
-        },
-        'Received response',
-      );
-    },
-  );
+    log.info(
+      {
+        data,
+        timestamp: responseTimestamp,
+      },
+      'Received response',
+    );
+  });
 };
 
 const [limit, skip] = process.argv.slice(2);

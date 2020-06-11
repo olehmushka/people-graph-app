@@ -37,14 +37,7 @@ describe('PersonHandlers test', () => {
   });
 
   test('createOne is success', async () => {
-    const ph = new PersonHandlers(
-      lg,
-      defaultNeo4jClient,
-      defaultPostgresClient,
-      qb,
-      qb,
-      parser,
-    );
+    const ph = new PersonHandlers(lg, defaultNeo4jClient, defaultPostgresClient, qb, qb, parser);
     const basePerson = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -62,29 +55,13 @@ describe('PersonHandlers test', () => {
     };
     defaultNeo4jClient.run.mockImplementation(() => Promise.resolve());
     parser.getAll.mockImplementation(() => [basePerson]);
-    const ph = new PersonHandlers(
-      lg,
-      defaultNeo4jClient,
-      defaultPostgresClient,
-      qb,
-      qb,
-      parser,
-    );
+    const ph = new PersonHandlers(lg, defaultNeo4jClient, defaultPostgresClient, qb, qb, parser);
     const result = await ph.getAll({ skip: 0, limit: 0 });
-    expect(omit(result[0], ['id', 'birthday'])).toEqual(
-      omit(basePerson, ['birthday']),
-    );
+    expect(omit(result[0], ['id', 'birthday'])).toEqual(omit(basePerson, ['birthday']));
   });
 
   test('deleteOne is success', async () => {
-    const ph = new PersonHandlers(
-      lg,
-      defaultNeo4jClient,
-      defaultPostgresClient,
-      qb,
-      qb,
-      parser,
-    );
+    const ph = new PersonHandlers(lg, defaultNeo4jClient, defaultPostgresClient, qb, qb, parser);
     await ph.deleteOne(faker.random.uuid());
     expect(defaultNeo4jClient.run).toHaveBeenCalledTimes(1);
   });

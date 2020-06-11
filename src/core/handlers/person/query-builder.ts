@@ -14,9 +14,7 @@ export class PersonNeo4jQueryBuilder implements IPersonQueryBuilder {
       `id: "${person.id}", ` +
       `firstName: "${person.firstName}", ` +
       `lastName: "${person.lastName}", ` +
-      `birthday: datetime("${person.birthday.format(
-        config.formats.datetime,
-      )}")` +
+      `birthday: datetime("${person.birthday.format(config.formats.datetime)}")` +
       '}) ' +
       'RETURN p'
     );

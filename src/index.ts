@@ -13,25 +13,19 @@ export class App {
       user: config.neo4j.user,
       password: config.neo4j.password,
     });
-    const postgresConnection = await creatPostgresConnection(
-      logger({ level: config.logger.level }),
-      {
-        database: config.postgres.database,
-        host: config.postgres.host,
-        port: config.postgres.port,
-        user: config.postgres.user,
-        password: config.postgres.password,
-      },
-    );
+    const postgresConnection = await creatPostgresConnection(logger({ level: config.logger.level }), {
+      database: config.postgres.database,
+      host: config.postgres.host,
+      port: config.postgres.port,
+      user: config.postgres.user,
+      password: config.postgres.password,
+    });
 
     const dependencies = {
       neo4jSession: session,
       postgresConnection,
     };
 
-    return Promise.all([
-      HttpServer.start(dependencies),
-      GrpcServer.start(dependencies),
-    ]);
+    return Promise.all([HttpServer.start(dependencies), GrpcServer.start(dependencies)]);
   }
 }

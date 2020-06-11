@@ -29,6 +29,20 @@ export namespace API {
     lastName: string;
     birthday: string;
   }
+  export interface GetOneCityResponse {
+    timestamp: string;
+    data: GetOneCityResponseData;
+  }
+  export interface GetOneCityResponseData {
+    id: string;
+    name: string;
+    state: GetOneCityResponseDataState;
+    country: Country;
+  }
+  export interface GetOneCityResponseDataState {
+    id: string;
+    name: string;
+  }
   export interface GetAllPersonsResponse {
     timestamp: string;
     data: GetAllPersonsResponseData[];
@@ -41,9 +55,9 @@ export namespace API {
   }
   export interface GetAllCountriesResponse {
     timestamp: string;
-    data: GetAllCountriesResponseData[];
+    data: Country[];
   }
-  export interface GetAllCountriesResponseData {
+  export interface Country {
     id: string;
     name: string;
     alpha2Code: string;

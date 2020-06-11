@@ -9,20 +9,10 @@ import './api/controllers';
 import config from '../../../config';
 import { TYPES } from './ioc/types';
 import middlewares, { errors } from './api/middlewares';
-import {
-  PersonMapper,
-  IPersonMapper,
-  LocationMapper,
-  ILocationMapper,
-} from './api/mappers';
+import { PersonMapper, IPersonMapper, LocationMapper, ILocationMapper } from './api/mappers';
 import { Neo4jClient } from '../../core/modules/neo4j';
 import { PostgresClient } from '../../core/modules/postgres';
-import {
-  getPersonHandler,
-  IPersonHandlers,
-  getLocationHandler,
-  ILocationHandlers,
-} from '../../core/handlers';
+import { getPersonHandler, IPersonHandlers, getLocationHandler, ILocationHandlers } from '../../core/handlers';
 
 export interface IHttpServerDependencies {
   neo4jSession: Session;
@@ -33,10 +23,7 @@ export class HttpServer {
   static async start(dependencies: IHttpServerDependencies): Promise<Server> {
     const baseLogger = logger({ level: config.logger.level });
     const neo4jClient = new Neo4jClient(baseLogger, dependencies.neo4jSession);
-    const postgresClient = new PostgresClient(
-      baseLogger,
-      dependencies.postgresConnection,
-    );
+    const postgresClient = new PostgresClient(baseLogger, dependencies.postgresConnection);
     const container = new Container();
 
     // bindings
@@ -44,25 +31,15 @@ export class HttpServer {
 
     container
       .bind<IPersonHandlers>(TYPES.personHandlers)
-      .toConstantValue(
-        getPersonHandler({ logger: baseLogger, neo4jClient, postgresClient }),
-      );
+      .toConstantValue(getPersonHandler({ logger: baseLogger, neo4jClient, postgresClient }));
 
     container
       .bind<ILocationHandlers>(TYPES.locationHandlers)
-      .toConstantValue(
-        getLocationHandler({ logger: baseLogger, postgresClient }),
-      );
+      .toConstantValue(getLocationHandler({ logger: baseLogger, postgresClient }));
 
-    container
-      .bind<IPersonMapper>(TYPES.personMapper)
-      .to(PersonMapper)
-      .inSingletonScope();
+    container.bind<IPersonMapper>(TYPES.personMapper).to(PersonMapper).inSingletonScope();
 
-    container
-      .bind<ILocationMapper>(TYPES.locationMapper)
-      .to(LocationMapper)
-      .inSingletonScope();
+    container.bind<ILocationMapper>(TYPES.locationMapper).to(LocationMapper).inSingletonScope();
 
     const server = new InversifyExpressServer(container, null, {
       rootPath: config.servers.http.basePath,
@@ -73,10 +50,7 @@ export class HttpServer {
       .setErrorConfig(errors({ logger: baseLogger }))
       .build()
       .listen(config.servers.http.port, () => {
-        baseLogger.info(
-          { port: config.servers.http.port },
-          'The HTTP server is running',
-        );
+        baseLogger.info({ port: config.servers.http.port }, 'The HTTP server is running');
       });
   }
 }

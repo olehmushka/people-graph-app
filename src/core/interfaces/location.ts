@@ -29,7 +29,6 @@ export interface ILocationHandlersGetAllParams {
   limit: number;
 }
 
-export interface ILocationHandlersGetAllCountriesParams
-  extends ILocationHandlersGetAllParams {
+export interface ILocationHandlersGetAllCountriesParams extends ILocationHandlersGetAllParams {
   countryName?: string;
 }

@@ -1,10 +1,4 @@
-import {
-  interfaces,
-  controller,
-  httpGet,
-  request,
-  response,
-} from 'inversify-express-utils';
+import { interfaces, controller, httpGet, request, response } from 'inversify-express-utils';
 import { Request, Response } from 'express';
 import { version } from '../../../../../package.json';
 

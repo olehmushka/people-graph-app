@@ -35,11 +35,7 @@ describe('LocationPostgresParser test', () => {
     } as unknown) as QueryResult;
 
     const result = parser.getAll(input);
-    expect(result.map((el) => omit(el, ['birthday']))).toEqual([
-      omit(person, ['birthday']),
-    ]);
-    expect(
-      result.some((el) => el.birthday.isSame(person.birthday, 'day')),
-    ).toEqual(true);
+    expect(result.map((el) => omit(el, ['birthday']))).toEqual([omit(person, ['birthday'])]);
+    expect(result.some((el) => el.birthday.isSame(person.birthday, 'day'))).toEqual(true);
   });
 });

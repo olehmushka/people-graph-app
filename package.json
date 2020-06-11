@@ -1,6 +1,6 @@
 {
   "name": "people-graph-app",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "app for building graph with people",
   "main": "dist/index.js",
   "repository": "https://github.com/olehmushka/people-graph-app",
@@ -29,7 +29,9 @@
     "grpc:run-get-all-person": "node -r dotenv/config ./dist/src/core/clients/grpc/person/get-all.js",
     "grpc:run-delete-one-person": "node -r dotenv/config ./dist/src/core/clients/grpc/person/delete-one.js",
     "sql:create-tables": "node -r dotenv/config ./dist/scripts/migrations/create-tables.js",
-    "sql:drop-tables": "node -r dotenv/config ./dist/scripts/migrations/drop-tables.js"
+    "sql:drop-tables": "node -r dotenv/config ./dist/scripts/migrations/drop-tables.js",
+    "sql:create-views": "node -r dotenv/config ./dist/scripts/migrations/create-views.js",
+    "sql:drop-views": "node -r dotenv/config ./dist/scripts/migrations/drop-views.js"
   },
   "dependencies": {
     "@grpc/proto-loader": "0.5.4",

@@ -21,9 +21,7 @@ export default (logger: BaseLogger) => (
   if (statusCode) {
     statusCode >= 500 ? logger.error({ stack }, message) : logger.warn(message);
 
-    res
-      .status(statusCode)
-      .send(Boom.boomify(error, { statusCode, message }).output.payload);
+    res.status(statusCode).send(Boom.boomify(error, { statusCode, message }).output.payload);
   } else if (error instanceof HttpError) {
     logger.info({ method, url }, error.getMessage());
     res.status(error.getStatusCode()).send(error.getPayload());

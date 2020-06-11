@@ -1,16 +1,10 @@
-import {
-  interfaces,
-  controller,
-  httpGet,
-  request,
-  response,
-} from 'inversify-express-utils';
+import { interfaces, controller, httpGet, request, response } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { Request, Response } from 'express';
 import status from 'http-status';
 import { TYPES } from '../../ioc/types';
 import { ILocationHandlers } from '../../../../core/handlers';
-import { locationGetAllSchema } from '../../../schemas';
+import { locationGetAllSchema, locationGetOneCitySchema } from '../../../schemas';
 import { ILocationMapper } from '../mappers';
 import { API } from '../models/schema';
 
@@ -22,21 +16,23 @@ export class LocationController implements interfaces.Controller {
   ) {}
 
   @httpGet('/country')
-  public async getAll(
-    @request() req: Request,
-    @response() res: Response,
-  ): Promise<void> {
-    const { skip, limit, countryName } = await locationGetAllSchema.validate(
-      req.query,
-    );
+  public async getAll(@request() req: Request, @response() res: Response): Promise<void> {
+    const { skip, limit, countryName } = await locationGetAllSchema.validate(req.query);
     const result = await this.locationHandler.getAllCountries({
       skip,
       limit,
       countryName,
     });
-    const response: API.GetAllCountriesResponse = this.locationMapper.responseGetAll(
-      result,
-    );
+    const response: API.GetAllCountriesResponse = this.locationMapper.responseGetAll(result);
+
+    res.status(status.OK).json(response);
+  }
+
+  @httpGet('/city/:id')
+  public async getOneCity(@request() req: Request, @response() res: Response): Promise<void> {
+    const { id } = await locationGetOneCitySchema.validate(req.params);
+    const result = await this.locationHandler.getOneCity(id);
+    const response: API.GetOneCityResponse = this.locationMapper.responseGetOneCity(result);
 
     res.status(status.OK).json(response);
   }

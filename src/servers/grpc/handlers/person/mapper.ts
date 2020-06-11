@@ -1,36 +1,26 @@
 import moment from 'moment';
 import { ServerUnaryCall } from 'grpc';
 import * as pb from '../../proto/person/person_pb';
-import {
-  IBasePerson,
-  IPerson,
-  IPersonHandlersGetAllParams,
-} from '../../../../core/interfaces';
+import { IBasePerson, IPerson, IPersonHandlersGetAllParams } from '../../../../core/interfaces';
 import config from '../../../../../config';
 
 export interface IPersonMapper {
   requestCreateOne(call: ServerUnaryCall<pb.CreateOneRequest>): IBasePerson;
   responseCreateOne(response: IPerson): pb.CreateOneResponse;
-  requestGetAll(
-    call: ServerUnaryCall<pb.GetAllRequest>,
-  ): IPersonHandlersGetAllParams;
+  requestGetAll(call: ServerUnaryCall<pb.GetAllRequest>): IPersonHandlersGetAllParams;
   responseGetAll(response: IPerson[]): pb.GetAllResponse;
   requestDeleteOne(call: ServerUnaryCall<pb.DeleteOneRequest>): string;
   responseDeleteOne(): pb.DeleteOneResponse;
 }
 
 export class PersonMapper implements IPersonMapper {
-  public requestCreateOne(
-    call: ServerUnaryCall<pb.CreateOneRequest>,
-  ): IBasePerson {
+  public requestCreateOne(call: ServerUnaryCall<pb.CreateOneRequest>): IBasePerson {
     const requestData = call.request.getData();
 
     return {
       firstName: requestData?.getFirstname() ?? '',
       lastName: requestData?.getLastname() ?? '',
-      birthday: requestData?.getBirthday()
-        ? moment(requestData.getBirthday())
-        : moment(),
+      birthday: requestData?.getBirthday() ? moment(requestData.getBirthday()) : moment(),
     };
   }
 
@@ -49,9 +39,7 @@ export class PersonMapper implements IPersonMapper {
     return response;
   }
 
-  public requestGetAll(
-    call: ServerUnaryCall<pb.GetAllRequest>,
-  ): IPersonHandlersGetAllParams {
+  public requestGetAll(call: ServerUnaryCall<pb.GetAllRequest>): IPersonHandlersGetAllParams {
     return {
       limit: call.request.getLimit(),
       skip: call.request.getSkip(),

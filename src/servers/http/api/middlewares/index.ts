@@ -13,17 +13,11 @@ import path from 'path';
 export default ({ logger }: IDependencies) => (app: Application): void => {
   app.use(logRequestParams(logger));
   app.use(logRequestTime(logger));
-  app.use(
-    path.resolve(`${config.servers.http.basePath}`, 'swagger-ui'),
-    serve,
-    swagger(logger) as RequestHandler,
-  );
+  app.use(path.resolve(`${config.servers.http.basePath}`, 'swagger-ui'), serve, swagger(logger) as RequestHandler);
   app.use(bodyParser.json());
 };
 
-export const errors = ({ logger }: IDependencies) => (
-  app: Application,
-): void => {
+export const errors = ({ logger }: IDependencies) => (app: Application): void => {
   app.use(notFound);
   app.use(errorHandling(logger));
 };

@@ -32,20 +32,17 @@ export const creatPostgresConnection = async (
 };
 
 export interface IPostgresClient {
-  query<T>(query: string, values?: any[]): Promise<QueryResult<T>>;
+  query<T>(query: string, values?: any[]): Promise<QueryResult<T> | QueryResult<T>[]>;
   end(): Promise<void>;
 }
 
 export class PostgresClient implements IPostgresClient {
   private static instance: PostgresClient;
-  constructor(
-    private readonly logger: BaseLogger,
-    private readonly client: NativePostgresClient,
-  ) {
+  constructor(private readonly logger: BaseLogger, private readonly client: NativePostgresClient) {
     PostgresClient.instance = this;
   }
 
-  public query<T>(query: string, values?: any[]): Promise<QueryResult<T>> {
+  public query<T>(query: string, values?: any[]): Promise<QueryResult<T> | QueryResult<T>[]> {
     const self = this === undefined ? PostgresClient.instance : this;
 
     return self.client
@@ -60,7 +57,11 @@ export class PostgresClient implements IPostgresClient {
     return self.client.end();
   }
 
-  private buildResponse<T>(data: QueryResult<T>): QueryResult<T> {
+  private buildResponse<T>(data: QueryResult<T> | QueryResult<T>[]): QueryResult<T> | QueryResult<T>[] {
+    if (Array.isArray(data)) {
+      return data.filter((result) => result.command === 'SELECT');
+    }
+
     return data;
   }
 

@@ -6,10 +6,7 @@ import config from '../../../../../config';
 export default (logger: BaseLogger): RequestHandler => {
   const options = {
     swaggerOptions: {
-      url: `${config.servers.http.swaggerBasePath.replace(
-        /\/$/gm,
-        '',
-      )}/swagger.json`,
+      url: `${config.servers.http.swaggerBasePath.replace(/\/$/gm, '')}/swagger.json`,
     },
   };
 

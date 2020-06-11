@@ -15,10 +15,12 @@ const defaultPostgresClient = {
 
 const qb = {
   getAllCountries: jest.fn(),
+  getOneCity: jest.fn(),
 };
 
 const parser = {
   getAllCountries: jest.fn(),
+  getOneCity: jest.fn(),
 };
 
 describe('LocationHandlers test', () => {

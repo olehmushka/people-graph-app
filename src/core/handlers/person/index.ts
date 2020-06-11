@@ -1,17 +1,9 @@
 import { BaseLogger } from 'pino';
 import { INeo4jClient } from '../../modules/neo4j';
 import { IPostgresClient } from '../../modules/postgres';
-import {
-  IPersonQueryBuilder,
-  PersonNeo4jQueryBuilder,
-  PersonPostgresQueryBuilder,
-} from './query-builder';
+import { IPersonQueryBuilder, PersonNeo4jQueryBuilder, PersonPostgresQueryBuilder } from './query-builder';
 import { PersonNeo4jParser, IPersonNeo4jParser } from './neo4j-parser';
-import {
-  IBasePerson,
-  IPerson,
-  IPersonHandlersGetAllParams,
-} from '../../interfaces';
+import { IBasePerson, IPerson, IPersonHandlersGetAllParams } from '../../interfaces';
 
 export interface IPersonHandlers {
   createOne(person: IBasePerson): Promise<IPerson>;
@@ -55,9 +47,7 @@ export class PersonHandlers implements IPersonHandlers {
     const self = this === undefined ? PersonHandlers.instance : this;
 
     try {
-      const persons = await self.neo4jClient
-        .run(self.neo4jQueryBuilder.getAll(params))
-        .then(self.neo4jParser.getAll);
+      const persons = await self.neo4jClient.run(self.neo4jQueryBuilder.getAll(params)).then(self.neo4jParser.getAll);
 
       return persons;
     } catch (error) {
@@ -94,11 +84,7 @@ export interface IPersonHandlerConfig {
   postgresClient: IPostgresClient;
 }
 
-export const getPersonHandler = ({
-  logger,
-  neo4jClient,
-  postgresClient,
-}: IPersonHandlerConfig): PersonHandlers =>
+export const getPersonHandler = ({ logger, neo4jClient, postgresClient }: IPersonHandlerConfig): PersonHandlers =>
   new PersonHandlers(
     logger,
     neo4jClient,

@@ -18,10 +18,7 @@ export class GrpcServer {
     const server = new Server();
     const baseLogger = logger({ level: config.logger.level });
     const neo4jClient = new Neo4jClient(baseLogger, dependencies.neo4jSession);
-    const postgresClient = new PostgresClient(
-      baseLogger,
-      dependencies.postgresConnection,
-    );
+    const postgresClient = new PostgresClient(baseLogger, dependencies.postgresConnection);
 
     server.addService(
       person.service,

@@ -65,7 +65,7 @@ main()
     baseLogger.info('Tables were created');
     process.exit(0);
   })
-  .catch((error: any) => {
+  .catch((error: unknown) => {
     process.stderr.write(String(error));
     process.exit(1);
   });
