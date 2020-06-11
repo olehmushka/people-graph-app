@@ -14,6 +14,10 @@ export interface IState extends IBaseState {
   country: ICountry;
 }
 
+export interface ICountryWithStates extends ICountry {
+  states: IBaseState[];
+}
+
 export interface IBaseCity {
   id: string;
   name: string;

@@ -1,11 +1,12 @@
 import moment from 'moment';
 import { injectable } from 'inversify';
 import { API } from '../models/schema';
-import { ICountry, ICity } from '../../../../core/interfaces';
+import { ICountry, ICountryWithStates, ICity } from '../../../../core/interfaces';
 import config from '../../../../../config';
 
 export interface ILocationMapper {
   responseGetAll(response: ICountry[]): API.GetAllCountriesResponse;
+  responseGetOneCountry(response: ICountryWithStates): API.GetOneCountryResponse;
   responseGetOneCity(response: ICity): API.GetOneCityResponse;
 }
 
@@ -19,6 +20,22 @@ export class LocationMapper implements ILocationMapper {
         alpha2Code: country.alpha2Code,
         alpha3Code: country.alpha3Code,
       })),
+      timestamp: moment().format(config.formats.datetime),
+    };
+  }
+
+  public responseGetOneCountry(response: ICountryWithStates): API.GetOneCountryResponse {
+    return {
+      data: {
+        id: response.id,
+        name: response.name,
+        alpha2Code: response.alpha2Code,
+        alpha3Code: response.alpha3Code,
+        states: response.states.map((state) => ({
+          id: state.id,
+          name: state.name,
+        })),
+      },
       timestamp: moment().format(config.formats.datetime),
     };
   }

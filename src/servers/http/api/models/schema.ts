@@ -4,6 +4,10 @@
  */
 
 export namespace API {
+  export interface State {
+    id: string;
+    name: string;
+  }
   export interface PersonDeleteOneResponse {
     timestamp: string;
     data: PersonDeleteOneResponseData;
@@ -29,6 +33,17 @@ export namespace API {
     lastName: string;
     birthday: string;
   }
+  export interface GetOneCountryResponse {
+    timestamp: string;
+    data: GetOneCountryResponseData;
+  }
+  export interface GetOneCountryResponseData {
+    id: string;
+    name: string;
+    alpha2Code: string;
+    alpha3Code: string;
+    states: State[];
+  }
   export interface GetOneCityResponse {
     timestamp: string;
     data: GetOneCityResponseData;
@@ -36,12 +51,8 @@ export namespace API {
   export interface GetOneCityResponseData {
     id: string;
     name: string;
-    state: GetOneCityResponseDataState;
+    state: State;
     country: Country;
-  }
-  export interface GetOneCityResponseDataState {
-    id: string;
-    name: string;
   }
   export interface GetAllPersonsResponse {
     timestamp: string;

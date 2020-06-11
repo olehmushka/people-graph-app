@@ -15,11 +15,13 @@ const defaultPostgresClient = {
 
 const qb = {
   getAllCountries: jest.fn(),
+  getOneCountry: jest.fn(),
   getOneCity: jest.fn(),
 };
 
 const parser = {
   getAllCountries: jest.fn(),
+  getOneCountry: jest.fn(),
   getOneCity: jest.fn(),
 };
 

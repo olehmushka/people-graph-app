@@ -11,6 +11,15 @@ export const locationGetAllSchema = new Schema(
   }),
 );
 
+export const locationGetOneCountrySchema = new Schema(
+  joi.object().keys({
+    id: joi
+      .string()
+      .guid({ version: ['uuidv4', 'uuidv5'] })
+      .required(),
+  }),
+);
+
 export const locationGetOneCitySchema = new Schema(
   joi.object().keys({
     id: joi

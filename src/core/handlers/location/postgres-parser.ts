@@ -1,5 +1,5 @@
 import { QueryResult } from 'pg';
-import { ICountry, ICity } from '../../interfaces';
+import { ICountry, ICountryWithStates, ICity } from '../../interfaces';
 
 export interface ILocationRowCountry {
   id: string;
@@ -20,11 +20,24 @@ export interface ILocationRowFullCity {
   country_alpha_three_code: string;
 }
 
-export interface ILocationRawCity {}
+export interface ILocationRawFullCountryCountryPart {
+  country_id: string;
+  country_name: string;
+  country_alpha_two_code: string;
+  country_alpha_three_code: string;
+}
+
+export interface ILocationRawFullCountryStatePart {
+  state_id: string;
+  state_name: string;
+}
 
 export interface ILocationPostgresParser {
   getAllCountries(queryResult: QueryResult<ILocationRowCountry>): ICountry[];
-  getOneCity(queryResult: QueryResult<ILocationRawCity>): ICity[];
+  getOneCountry(
+    queryResult: [QueryResult<ILocationRawFullCountryCountryPart>, QueryResult<ILocationRawFullCountryStatePart>],
+  ): ICountryWithStates;
+  getOneCity(queryResult: QueryResult<ILocationRowFullCity>): ICity[];
 }
 
 export class LocationPostgresParser implements ILocationPostgresParser {
@@ -35,6 +48,21 @@ export class LocationPostgresParser implements ILocationPostgresParser {
       alpha2Code: row.alpha_two_code,
       alpha3Code: row.alpha_three_code,
     }));
+  }
+
+  public getOneCountry(
+    queryResult: [QueryResult<ILocationRawFullCountryCountryPart>, QueryResult<ILocationRawFullCountryStatePart>],
+  ): ICountryWithStates {
+    return {
+      id: queryResult[0].rows[0].country_id,
+      name: queryResult[0].rows[0].country_name,
+      alpha2Code: queryResult[0].rows[0].country_alpha_two_code,
+      alpha3Code: queryResult[0].rows[0].country_alpha_three_code,
+      states: queryResult[1].rows.map((state) => ({
+        id: state.state_id,
+        name: state.state_name,
+      })),
+    };
   }
 
   public getOneCity(queryResult: QueryResult<ILocationRowFullCity>): ICity[] {

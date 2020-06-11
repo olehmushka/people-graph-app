@@ -130,6 +130,24 @@ paths:
               schema:
                 $ref: '#/definitions/GetAllCountriesResponse'
 
+  /location/country/{countryId}:
+    get:
+      tags:
+        - location
+      summary: Get certain country
+      parameters:
+        - name: countryId
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Single country
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/GetOneCountryResponse'
+
   /location/city/{cityId}:
     get:
       tags:
@@ -147,7 +165,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/definitions/GetOneCityResponse'
-
+              
 definitions:
   DateTime:
     type: string
@@ -260,6 +278,18 @@ definitions:
       alpha3Code:
         type: string
 
+  State:
+    type: object
+    required:
+    - id
+    - name
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+
   GetAllCountriesResponse:
     type: object
     required:
@@ -272,6 +302,38 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Country'
+
+  GetOneCountryResponse:
+    type: object
+    required:
+    - timestamp
+    - data
+    properties:
+      timestamp:
+        $ref: '#/definitions/DateTime'
+      data:
+        type: object
+        required:
+        - id
+        - name
+        - alpha2Code
+        - alpha3Code
+        - states
+        properties:
+          id:
+            type: string
+            format: uuid
+          name:
+            type: string
+          alpha2Code:
+            type: string
+          alpha3Code:
+            type: string
+          states:
+            type: array
+            items:
+              $ref: '#/definitions/State'
+
 
   GetOneCityResponse:
     type: object
@@ -295,15 +357,6 @@ definitions:
           name:
             type: string
           state:
-            type: object
-            required:
-            - id
-            - name
-            properties:
-              id:
-                type: string
-                format: uuid
-              name:
-                type: string
+            $ref: '#/definitions/State'
           country:
             $ref: '#/definitions/Country'

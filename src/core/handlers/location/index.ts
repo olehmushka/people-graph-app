@@ -1,17 +1,21 @@
 import { BaseLogger } from 'pino';
+import { QueryResult } from 'pg';
 import { IPostgresClient } from '../../modules/postgres';
 import { LocationPostgresQueryBuilder, ILocationQueryBuilder } from './query-builder';
 import {
   LocationPostgresParser,
   ILocationPostgresParser,
   ILocationRowCountry,
+  ILocationRawFullCountryCountryPart,
+  ILocationRawFullCountryStatePart,
   ILocationRowFullCity,
 } from './postgres-parser';
-import { ILocationHandlersGetAllCountriesParams, ICountry, ICity } from '../../interfaces';
+import { ILocationHandlersGetAllCountriesParams, ICountry, ICountryWithStates, ICity } from '../../interfaces';
 import { NotFoundError } from '../../../servers/http/api/errors';
 
 export interface ILocationHandlers {
   getAllCountries(params: ILocationHandlersGetAllCountriesParams): Promise<ICountry[]>;
+  getOneCountry(id: string): Promise<ICountryWithStates>;
   getOneCity(id: string): Promise<ICity>;
 }
 
@@ -36,6 +40,37 @@ export class LocationHandlers implements ILocationHandlers {
       const mapped = Array.isArray(queryResult)
         ? self.postgresParser.getAllCountries(queryResult[0])
         : self.postgresParser.getAllCountries(queryResult);
+
+      return mapped;
+    } catch (error) {
+      return self.errorHandle(error);
+    }
+  }
+
+  public async getOneCountry(id: string): Promise<ICountryWithStates> {
+    const self = this === undefined ? LocationHandlers.instance : this;
+
+    try {
+      const queryResult = (await self.postgresClient.query<
+        ILocationRawFullCountryCountryPart | ILocationRawFullCountryStatePart
+      >(self.postgresQueryBuilder.getOneCountry(id))) as [
+        QueryResult<ILocationRawFullCountryCountryPart>,
+        QueryResult<ILocationRawFullCountryStatePart>,
+      ];
+
+      if (!Array.isArray(queryResult)) {
+        throw new NotFoundError(`country with id=${id} or its states were found`);
+      }
+
+      if (queryResult.length !== 2) {
+        throw new NotFoundError(`country with id=${id} or its states were found`);
+      }
+
+      if (queryResult[0].rows.length === 0) {
+        throw new NotFoundError(`country with id=${id} was not found`);
+      }
+
+      const mapped = self.postgresParser.getOneCountry(queryResult);
 
       return mapped;
     } catch (error) {

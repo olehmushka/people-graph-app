@@ -22,9 +22,9 @@ const main = async (): Promise<void> => {
       co.alpha_two_code AS country_alpha_two_code,
       co.alpha_three_code AS country_alpha_three_code
     FROM cities AS ci
-    JOIN states as st ON ci.state_id=st.id
-    JOIN countries as co ON st.country_id=co.id
-    WHERE ci.id=cast(current_setting('location_domain.city_id') as varchar);
+    JOIN states AS st ON ci.state_id=st.id
+    JOIN countries AS co ON st.country_id=co.id
+    WHERE ci.id=cast(current_setting('location_domain.city_id') AS varchar);
   `);
 };
 
