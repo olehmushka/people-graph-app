@@ -26,6 +26,21 @@ const main = async (): Promise<void> => {
     JOIN countries AS co ON st.country_id=co.id
     WHERE ci.id=cast(current_setting('location_domain.city_id') AS varchar);
   `);
+  await client.query(`
+  CREATE VIEW full_country_with_states_by_id AS
+    SELECT 
+      c.id AS country_id,
+      c.name AS country_name,
+      c.alpha_two_code AS country_alpha_two_code,
+      c.alpha_three_code AS country_alpha_three_code,
+      (SELECT CONCAT('[',(SELECT STRING_AGG(CONCAT('{"id": "', s1.id, '", "name": "',s1.name,'"}'),', ')
+      FROM states s1 
+      WHERE s1.country_id = c.id), ']')) country_states
+    FROM countries AS c
+    LEFT JOIN states AS s ON s.country_id = c.id
+    WHERE c.id=cast(current_setting('location_domain.country_id') AS varchar)
+    GROUP BY c.id;
+  `);
 };
 
 main()

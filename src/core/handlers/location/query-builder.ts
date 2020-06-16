@@ -21,18 +21,8 @@ export class LocationPostgresQueryBuilder implements ILocationQueryBuilder {
 
   public getOneCountry(id: string): string {
     return `
-    SELECT
-      co.id AS country_id,
-      co.name AS country_name,
-      co.alpha_two_code AS country_alpha_two_code,
-      co.alpha_three_code AS country_alpha_three_code
-    FROM countries as co
-    WHERE co.id='${id}';
-    SELECT
-      id AS state_id,
-      name AS state_name
-    FROM states
-    WHERE country_id='${id}';
+    SET location_domain.country_id = '${id}';
+    SELECT * FROM full_country_with_states_by_id;
     `;
   }
 
