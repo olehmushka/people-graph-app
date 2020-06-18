@@ -6,6 +6,7 @@
     "mocha": true
   },
   "extends": [
+    "plugin:security/recommended",
     "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {
@@ -13,6 +14,7 @@
     "sourceType": "module"
   },
   "plugins": [
+    "security",
     "unused-imports"
   ],
   "rules": {
@@ -27,6 +29,15 @@
       { "blankLine": "always", "prev": "if", "next": "if" }
     ],
     "quotes": [ "warn", "single"],
+    "security/detect-unsafe-regex": "error",
+    "security/detect-eval-with-expression": "error",
+    "security/detect-no-csrf-before-method-override": "error",
+    "security/detect-non-literal-fs-filename": "error",
+    "security/detect-non-literal-regexp": "error",
+    "security/detect-non-literal-require": "error",
+    "security/detect-object-injection": "error",
+    "security/detect-possible-timing-attacks": "error",
+    "security/detect-pseudoRandomBytes": "error",
     "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/interface-name-prefix": ["warn", "always"],
     "@typescript-eslint/no-empty-interface": "off"
