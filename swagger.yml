@@ -96,7 +96,7 @@ paths:
               schema:
                 $ref: '#/definitions/PersonDeleteOneResponse'
 
-  /location/country:
+  /v1/location/country:
     get:
       tags:
         - location
@@ -130,7 +130,7 @@ paths:
               schema:
                 $ref: '#/definitions/GetAllCountriesResponse'
 
-  /location/country/{countryId}:
+  /v1/location/country/{countryId}:
     get:
       tags:
         - location
@@ -148,7 +148,7 @@ paths:
               schema:
                 $ref: '#/definitions/GetOneCountryResponse'
 
-  /location/city/{cityId}:
+  /v1/location/city/{cityId}:
     get:
       tags:
         - location

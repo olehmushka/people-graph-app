@@ -1,4 +1,4 @@
 import './swagger';
 import './healthcheck';
-import './location';
+import './location-v1';
 import './person';

@@ -1,6 +1,6 @@
 import { BaseLogger } from 'pino';
 import faker from 'faker';
-import { LocationHandlers } from '..';
+import { LocationHandlersV1 } from '..';
 
 const lg = ({
   info: jest.fn(),
@@ -25,7 +25,7 @@ const parser = {
   getOneCity: jest.fn(),
 };
 
-describe('LocationHandlers test', () => {
+describe('LocationHandlersV1 test', () => {
   beforeEach(() => {
     defaultPostgresClient.query.mockClear();
     defaultPostgresClient.end.mockClear();
@@ -44,7 +44,7 @@ describe('LocationHandlers test', () => {
     ];
     defaultPostgresClient.query.mockImplementation(() => Promise.resolve());
     parser.getAllCountries.mockImplementation(() => countries);
-    const lh = new LocationHandlers(lg, defaultPostgresClient, qb, parser);
+    const lh = new LocationHandlersV1(lg, defaultPostgresClient, qb, parser);
     const result = await lh.getAllCountries({ skip: 0, limit: 0 });
     expect(result).toEqual(countries);
   });

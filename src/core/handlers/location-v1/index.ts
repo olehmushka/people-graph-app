@@ -17,19 +17,19 @@ export interface ILocationHandlers {
   getOneCity(id: string): Promise<ICity>;
 }
 
-export class LocationHandlers implements ILocationHandlers {
-  private static instance: LocationHandlers;
+export class LocationHandlersV1 implements ILocationHandlers {
+  private static instance: LocationHandlersV1;
   constructor(
     private logger: BaseLogger,
     private postgresClient: IPostgresClient,
     private postgresQueryBuilder: ILocationQueryBuilder,
     private postgresParser: ILocationPostgresParser,
   ) {
-    LocationHandlers.instance = this;
+    LocationHandlersV1.instance = this;
   }
 
   public async getAllCountries(params: ILocationHandlersGetAllCountriesParams): Promise<ICountry[]> {
-    const self = this === undefined ? LocationHandlers.instance : this;
+    const self = this === undefined ? LocationHandlersV1.instance : this;
 
     try {
       const queryResult = await self.postgresClient.query<ILocationRowCountry>(
@@ -46,7 +46,7 @@ export class LocationHandlers implements ILocationHandlers {
   }
 
   public async getOneCountry(id: string): Promise<ICountryWithStates> {
-    const self = this === undefined ? LocationHandlers.instance : this;
+    const self = this === undefined ? LocationHandlersV1.instance : this;
 
     try {
       const queryResult = await self.postgresClient.query<ILocationRawFullCountry>(
@@ -67,7 +67,7 @@ export class LocationHandlers implements ILocationHandlers {
   }
 
   public async getOneCity(id: string): Promise<ICity> {
-    const self = this === undefined ? LocationHandlers.instance : this;
+    const self = this === undefined ? LocationHandlersV1.instance : this;
 
     try {
       const queryResult = await self.postgresClient.query<ILocationRowFullCity>(
@@ -87,7 +87,7 @@ export class LocationHandlers implements ILocationHandlers {
   }
 
   private errorHandle<T extends Error>(error: T): Promise<T> {
-    const self = this === undefined ? LocationHandlers.instance : this;
+    const self = this === undefined ? LocationHandlersV1.instance : this;
 
     const { stack, message } = error;
     self.logger.error({ stack }, message);
@@ -101,5 +101,5 @@ export interface ILocationHandlerConfig {
   postgresClient: IPostgresClient;
 }
 
-export const getLocationHandler = ({ logger, postgresClient }: ILocationHandlerConfig): LocationHandlers =>
-  new LocationHandlers(logger, postgresClient, new LocationPostgresQueryBuilder(), new LocationPostgresParser());
+export const getLocationHandler = ({ logger, postgresClient }: ILocationHandlerConfig): LocationHandlersV1 =>
+  new LocationHandlersV1(logger, postgresClient, new LocationPostgresQueryBuilder(), new LocationPostgresParser());

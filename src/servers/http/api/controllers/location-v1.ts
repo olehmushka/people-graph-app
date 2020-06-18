@@ -8,8 +8,8 @@ import { locationGetAllSchema, locationGetOneCitySchema, locationGetOneCountrySc
 import { ILocationMapper } from '../mappers';
 import { API } from '../models/schema';
 
-@controller('/location')
-export class LocationController implements interfaces.Controller {
+@controller('/v1/location')
+export class LocationV1Controller implements interfaces.Controller {
   constructor(
     @inject(TYPES.locationHandlers) private locationHandler: ILocationHandlers,
     @inject(TYPES.locationMapper) private locationMapper: ILocationMapper,
