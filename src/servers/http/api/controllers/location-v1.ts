@@ -3,7 +3,7 @@ import { inject } from 'inversify';
 import { Request, Response } from 'express';
 import status from 'http-status';
 import { TYPES } from '../../ioc/types';
-import { ILocationHandlers } from '../../../../core/handlers';
+import { ILocationHandlersV1 } from '../../../../core/handlers';
 import { locationGetAllSchema, locationGetOneCitySchema, locationGetOneCountrySchema } from '../../../schemas';
 import { ILocationMapper } from '../mappers';
 import { API } from '../models/schema';
@@ -11,7 +11,7 @@ import { API } from '../models/schema';
 @controller('/v1/location')
 export class LocationV1Controller implements interfaces.Controller {
   constructor(
-    @inject(TYPES.locationHandlers) private locationHandler: ILocationHandlers,
+    @inject(TYPES.locationHandlers) private locationHandler: ILocationHandlersV1,
     @inject(TYPES.locationMapper) private locationMapper: ILocationMapper,
   ) {}
 

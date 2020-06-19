@@ -1,20 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import { BaseLogger } from 'pino';
 import Boom from '@hapi/boom';
 import { InternalErrorError } from '../errors';
 import { HttpError } from '../errors/types';
+import { ILogger } from '../../../../core/lib/logger';
 
 export interface IExpressError extends Error {
   status?: number;
   statusCode?: number;
 }
 
-export default (logger: BaseLogger) => (
-  error: IExpressError,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): void => {
+export default (logger: ILogger) => (error: IExpressError, req: Request, res: Response, next: NextFunction): void => {
   const { method, url }: Request = req;
   const { message, stack, statusCode } = error;
 

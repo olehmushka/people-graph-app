@@ -1,4 +1,3 @@
-import { BaseLogger } from 'pino';
 import { Client as NativePostgresClient } from 'pg';
 import faker from 'faker';
 import { PostgresClient } from '../';
@@ -7,6 +6,7 @@ const lg = {
   info: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
+  debug: jest.fn(),
 };
 
 const nativePostgresClient = {
@@ -27,10 +27,7 @@ describe('postgres-module test', () => {
     const data = faker.random.objectElement();
     nativePostgresClient.query.mockImplementation(() => Promise.resolve(data));
 
-    const postgresClient = new PostgresClient(
-      (lg as unknown) as BaseLogger,
-      (nativePostgresClient as unknown) as NativePostgresClient,
-    );
+    const postgresClient = new PostgresClient(lg, (nativePostgresClient as unknown) as NativePostgresClient);
 
     const result = await postgresClient.query(faker.random.word());
 
@@ -41,10 +38,7 @@ describe('postgres-module test', () => {
     const error = new Error(faker.random.word());
     nativePostgresClient.query.mockImplementation(() => Promise.reject(error));
 
-    const postgresClient = new PostgresClient(
-      (lg as unknown) as BaseLogger,
-      (nativePostgresClient as unknown) as NativePostgresClient,
-    );
+    const postgresClient = new PostgresClient(lg, (nativePostgresClient as unknown) as NativePostgresClient);
 
     try {
       await postgresClient.query(faker.random.word());

@@ -1,5 +1,4 @@
 import { ServerUnaryCall, sendUnaryData } from 'grpc';
-import { BaseLogger } from 'pino';
 import { IPersonHandlers } from '../../../../core/handlers';
 import { IPersonHandlersGetAllParams } from '../../../../core/interfaces';
 import { personCreateSchema, personGetAllSchema, personDeleteSchema } from '../../../schemas';
@@ -7,15 +6,12 @@ import { PersonMapper, IPersonMapper } from './mapper';
 import * as pb from '../../proto/person/person_pb';
 import * as gpb from '../../proto/person/person_grpc_pb';
 import config from '../../../../../config';
+import { ILogger } from '../../../../core/lib/logger';
 
 export const service = gpb.PersonService;
 
 export class PersonHandler implements gpb.IPersonServer {
-  constructor(
-    private logger: BaseLogger,
-    private personHandler: IPersonHandlers,
-    private personMapper: IPersonMapper,
-  ) {}
+  constructor(private logger: ILogger, private personHandler: IPersonHandlers, private personMapper: IPersonMapper) {}
 
   public async createOne(
     call: ServerUnaryCall<pb.CreateOneRequest>,
@@ -81,7 +77,7 @@ export class PersonHandler implements gpb.IPersonServer {
 }
 
 export interface IPersonGrpcHandlerConfig {
-  logger: BaseLogger;
+  logger: ILogger;
   personHandler: IPersonHandlers;
 }
 

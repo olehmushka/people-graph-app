@@ -1,14 +1,14 @@
 import { Application, RequestHandler } from 'express';
-import { BaseLogger } from 'pino';
+import bodyParser from 'body-parser';
 import { serve } from 'swagger-ui-express';
+import path from 'path';
 import logRequestTime from './log-request-time';
 import swagger from './swagger';
 import notFound from './404-handling';
 import errorHandling from './error-handling';
-import bodyParser from 'body-parser';
 import logRequestParams from './log-request-params';
 import config from '../../../../../config';
-import path from 'path';
+import { ILogger } from '../../../../core/lib/logger';
 
 export default ({ logger }: IDependencies) => (app: Application): void => {
   app.use(logRequestParams(logger));
@@ -23,5 +23,5 @@ export const errors = ({ logger }: IDependencies) => (app: Application): void =>
 };
 
 export interface IDependencies {
-  logger: BaseLogger;
+  logger: ILogger;
 }

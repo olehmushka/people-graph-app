@@ -1,7 +1,7 @@
-import { BaseLogger } from 'pino';
 import { NextFunction, Response, Request } from 'express';
+import { ILogger } from '../../../../core/lib/logger';
 
-export default (logger: BaseLogger) => (req: Request, res: Response, next: NextFunction): void => {
+export default (logger: ILogger) => (req: Request, res: Response, next: NextFunction): void => {
   const data = {
     method: String(req.method).toLowerCase(),
     url: req.url,

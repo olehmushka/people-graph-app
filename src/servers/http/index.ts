@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import logger, { BaseLogger } from 'pino';
 import { Server } from 'http';
 import { Container } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
@@ -12,7 +11,8 @@ import middlewares, { errors } from './api/middlewares';
 import { PersonMapper, IPersonMapper, LocationMapper, ILocationMapper } from './api/mappers';
 import { Neo4jClient } from '../../core/modules/neo4j';
 import { PostgresClient } from '../../core/modules/postgres';
-import { getPersonHandler, IPersonHandlers, getLocationHandler, ILocationHandlers } from '../../core/handlers';
+import { getPersonHandler, IPersonHandlers, getLocationHandlerV1, ILocationHandlersV1 } from '../../core/handlers';
+import { getLogger, ILogger } from '../../core/lib/logger';
 
 export interface IHttpServerDependencies {
   neo4jSession: Session;
@@ -21,21 +21,21 @@ export interface IHttpServerDependencies {
 
 export class HttpServer {
   static async start(dependencies: IHttpServerDependencies): Promise<Server> {
-    const baseLogger = logger({ level: config.logger.level });
+    const baseLogger = getLogger({ level: config.logger.level });
     const neo4jClient = new Neo4jClient(baseLogger, dependencies.neo4jSession);
     const postgresClient = new PostgresClient(baseLogger, dependencies.postgresConnection);
     const container = new Container();
 
     // bindings
-    container.bind<BaseLogger>(TYPES.logger).toConstantValue(baseLogger);
+    container.bind<ILogger>(TYPES.logger).toConstantValue(baseLogger);
 
     container
       .bind<IPersonHandlers>(TYPES.personHandlers)
       .toConstantValue(getPersonHandler({ logger: baseLogger, neo4jClient, postgresClient }));
 
     container
-      .bind<ILocationHandlers>(TYPES.locationHandlers)
-      .toConstantValue(getLocationHandler({ logger: baseLogger, postgresClient }));
+      .bind<ILocationHandlersV1>(TYPES.locationHandlers)
+      .toConstantValue(getLocationHandlerV1({ logger: baseLogger, postgresClient }));
 
     container.bind<IPersonMapper>(TYPES.personMapper).to(PersonMapper).inSingletonScope();
 

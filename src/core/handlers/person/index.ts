@@ -1,9 +1,9 @@
-import { BaseLogger } from 'pino';
 import { INeo4jClient } from '../../modules/neo4j';
 import { IPostgresClient } from '../../modules/postgres';
 import { IPersonQueryBuilder, PersonNeo4jQueryBuilder, PersonPostgresQueryBuilder } from './query-builder';
 import { PersonNeo4jParser, IPersonNeo4jParser } from './neo4j-parser';
 import { IBasePerson, IPerson, IPersonHandlersGetAllParams } from '../../interfaces';
+import { ILogger } from '../../lib/logger';
 
 export interface IPersonHandlers {
   createOne(person: IBasePerson): Promise<IPerson>;
@@ -14,7 +14,7 @@ export interface IPersonHandlers {
 export class PersonHandlers implements IPersonHandlers {
   private static instance: PersonHandlers;
   constructor(
-    private logger: BaseLogger,
+    private logger: ILogger,
     private neo4jClient: INeo4jClient,
     private postgresClient: IPostgresClient,
     private neo4jQueryBuilder: IPersonQueryBuilder,
@@ -79,7 +79,7 @@ export class PersonHandlers implements IPersonHandlers {
 }
 
 export interface IPersonHandlerConfig {
-  logger: BaseLogger;
+  logger: ILogger;
   neo4jClient: INeo4jClient;
   postgresClient: IPostgresClient;
 }

@@ -1,5 +1,5 @@
 import { Client as NativePostgresClient, QueryResult } from 'pg';
-import { BaseLogger } from 'pino';
+import { ILogger } from '../../lib/logger';
 
 export interface IPostgresConfig {
   host: string;
@@ -10,7 +10,7 @@ export interface IPostgresConfig {
 }
 
 export const creatPostgresConnection = async (
-  logger: BaseLogger,
+  logger: ILogger,
   config: IPostgresConfig,
 ): Promise<NativePostgresClient> => {
   try {
@@ -38,7 +38,7 @@ export interface IPostgresClient {
 
 export class PostgresClient implements IPostgresClient {
   private static instance: PostgresClient;
-  constructor(private readonly logger: BaseLogger, private readonly client: NativePostgresClient) {
+  constructor(private readonly logger: ILogger, private readonly client: NativePostgresClient) {
     PostgresClient.instance = this;
   }
 

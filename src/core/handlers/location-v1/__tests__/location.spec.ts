@@ -1,12 +1,12 @@
-import { BaseLogger } from 'pino';
 import faker from 'faker';
 import { LocationHandlersV1 } from '..';
 
-const lg = ({
+const lg = {
   info: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
-} as unknown) as BaseLogger;
+  debug: jest.fn(),
+};
 
 const defaultPostgresClient = {
   query: jest.fn(),

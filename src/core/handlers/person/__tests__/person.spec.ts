@@ -1,14 +1,14 @@
-import { BaseLogger } from 'pino';
 import moment from 'moment';
 import faker from 'faker';
 import omit from 'lodash/omit';
 import { PersonHandlers } from '..';
 
-const lg = ({
+const lg = {
   info: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
-} as unknown) as BaseLogger;
+  debug: jest.fn(),
+};
 
 const defaultNeo4jClient = {
   run: jest.fn(),

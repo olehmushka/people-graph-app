@@ -1,5 +1,5 @@
 import { driver, auth, Session, QueryResult, Neo4jError, Config } from 'neo4j-driver';
-import { BaseLogger } from 'pino';
+import { ILogger } from '../../lib/logger';
 
 export interface INeo4jConfig {
   uri: string;
@@ -16,7 +16,7 @@ export const createSession = (baseConfig: INeo4jConfig, authConfig?: Config): Se
 
 export class Neo4jClient implements INeo4jClient {
   private static instance: Neo4jClient;
-  constructor(private readonly logger: BaseLogger, private readonly session: Session) {
+  constructor(private readonly logger: ILogger, private readonly session: Session) {
     Neo4jClient.instance = this;
   }
 

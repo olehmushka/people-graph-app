@@ -1,4 +1,3 @@
-import { BaseLogger } from 'pino';
 import { IPostgresClient } from '../../modules/postgres';
 import { LocationPostgresQueryBuilder, ILocationQueryBuilder } from './query-builder';
 import {
@@ -10,17 +9,18 @@ import {
 } from './postgres-parser';
 import { ILocationHandlersGetAllCountriesParams, ICountry, ICountryWithStates, ICity } from '../../interfaces';
 import { NotFoundError } from '../../../servers/http/api/errors';
+import { ILogger } from '../../lib/logger';
 
-export interface ILocationHandlers {
+export interface ILocationHandlersV1 {
   getAllCountries(params: ILocationHandlersGetAllCountriesParams): Promise<ICountry[]>;
   getOneCountry(id: string): Promise<ICountryWithStates>;
   getOneCity(id: string): Promise<ICity>;
 }
 
-export class LocationHandlersV1 implements ILocationHandlers {
+export class LocationHandlersV1 implements ILocationHandlersV1 {
   private static instance: LocationHandlersV1;
   constructor(
-    private logger: BaseLogger,
+    private logger: ILogger,
     private postgresClient: IPostgresClient,
     private postgresQueryBuilder: ILocationQueryBuilder,
     private postgresParser: ILocationPostgresParser,
@@ -96,10 +96,10 @@ export class LocationHandlersV1 implements ILocationHandlers {
   }
 }
 
-export interface ILocationHandlerConfig {
-  logger: BaseLogger;
+export interface ILocationHandlerV1Config {
+  logger: ILogger;
   postgresClient: IPostgresClient;
 }
 
-export const getLocationHandler = ({ logger, postgresClient }: ILocationHandlerConfig): LocationHandlersV1 =>
+export const getLocationHandlerV1 = ({ logger, postgresClient }: ILocationHandlerV1Config): LocationHandlersV1 =>
   new LocationHandlersV1(logger, postgresClient, new LocationPostgresQueryBuilder(), new LocationPostgresParser());
