@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { from as rxFrom, Observable } from 'rxjs';
 import { ILogger } from '../../lib/logger';
 
 export interface IAxiosClientRequest extends AxiosRequestConfig {}
@@ -48,6 +49,7 @@ export interface IAxiosClientConfig {
 
 export interface IAxiosClient {
   instance: IAxiosClientInstance;
+  get<T>(url: string, config?: IAxiosClientRequest): Observable<T>;
 }
 
 export class AxiosClient implements IAxiosClient {
@@ -74,6 +76,10 @@ export class AxiosClient implements IAxiosClient {
     );
   }
 
+  public get<T>(url: string, config?: IAxiosClientRequest): Observable<T> {
+    return this.convertToObservable(this.instance.get(url, config));
+  }
+
   private defaultRequestFulfilledHandler(value: IAxiosClientRequest): IAxiosClientRequest {
     return value;
   }
@@ -89,5 +95,9 @@ export class AxiosClient implements IAxiosClient {
   private defaultResponseRejectedHandler(error: any): never {
     this.logger.error('axios rejected response', error);
     throw error;
+  }
+
+  private convertToObservable<T>(promise: Promise<T>): Observable<T> {
+    return rxFrom(promise);
   }
 }

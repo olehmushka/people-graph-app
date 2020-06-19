@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { IAxiosClient, IAxiosClientResponse } from '../../modules/axios-client';
 import { RestCountriesMapper, IRestCountriesMapper, IRestCountriesV2Country } from './mapper';
 import { ICountry } from '../../interfaces';
@@ -11,11 +12,14 @@ export class RestCountriesRetriever implements IRestCountriesRetriever {
   constructor(private axiosClient: IAxiosClient, private mapper: IRestCountriesMapper) {}
 
   public getCountries(): Promise<ICountry[]> {
-    this.axiosClient.instance.interceptors.response.use((res: IAxiosClientResponse<IRestCountriesV2Country[]>) =>
-      this.mapper.getCountries(res.data),
-    );
-
-    return this.axiosClient.instance.get<ICountry[], ICountry[]>(config.services.restCountries.paths.countriesV2);
+    return this.axiosClient
+      .get<IAxiosClientResponse<IRestCountriesV2Country[]>>(config.services.restCountries.paths.countriesV2)
+      .pipe<ICountry[]>(
+        map<IAxiosClientResponse<IRestCountriesV2Country[]>, ICountry[]>(
+          (res: IAxiosClientResponse<IRestCountriesV2Country[]>): ICountry[] => this.mapper.getCountries(res.data),
+        ),
+      )
+      .toPromise();
   }
 }
 

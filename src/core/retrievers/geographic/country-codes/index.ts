@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { IAxiosClient, IAxiosClientResponse } from '../../../modules/axios-client';
 import { ICountry } from '../../../interfaces';
 import { GeographicCountryCodesParser, IGeographicCountryCodesParser } from './parser';
@@ -11,11 +12,14 @@ export class GeographicCountryCodesRetriever implements IGeographicCountryCodesR
   constructor(private axiosClient: IAxiosClient, private parser: IGeographicCountryCodesParser) {}
 
   public getCountryCodes(): Promise<ICountry[]> {
-    this.axiosClient.instance.interceptors.response.use((res: IAxiosClientResponse<string>) =>
-      this.parser.getCountryCodes(res.data),
-    );
-
-    return this.axiosClient.instance.get<ICountry[], ICountry[]>(config.services.wikipedia.paths.countries);
+    return this.axiosClient
+      .get<IAxiosClientResponse<string>>(config.services.wikipedia.paths.countries)
+      .pipe<ICountry[]>(
+        map<IAxiosClientResponse<string>, ICountry[]>(
+          (res: IAxiosClientResponse<string>): ICountry[] => this.parser.getCountryCodes(res.data),
+        ),
+      )
+      .toPromise();
   }
 }
 

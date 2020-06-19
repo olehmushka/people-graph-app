@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { IAxiosClient, IAxiosClientResponse } from '../../../modules/axios-client';
 import { ICountry } from '../../../interfaces';
 import { WikiLocationParser, IWikiLocationParser } from './parser';
@@ -15,7 +16,14 @@ export class WikiLocationRetriever implements IWikiLocationRetriever {
       this.parser.getCountries(res.data),
     );
 
-    return this.axiosClient.instance.get<ICountry[], ICountry[]>(config.services.wikipedia.paths.countries);
+    return this.axiosClient
+      .get<IAxiosClientResponse<string>>(config.services.wikipedia.paths.countries)
+      .pipe<ICountry[]>(
+        map<IAxiosClientResponse<string>, ICountry[]>(
+          (res: IAxiosClientResponse<string>): ICountry[] => this.parser.getCountries(res.data),
+        ),
+      )
+      .toPromise();
   }
 }
 

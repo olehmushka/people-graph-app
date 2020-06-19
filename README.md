@@ -8,3 +8,4 @@ Tasks:
 * Add relationships between persons and locations
 * Use more services in `https://photius.com/rankings/index.html`
 * Use meteo services
+* Replace Promises to Observables
