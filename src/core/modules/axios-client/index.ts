@@ -9,13 +9,15 @@ export interface IAxiosClientInstance {
   interceptors: {
     request: {
       use: (
-        onFulfilled?: (value: IAxiosClientRequest) => IAxiosClientRequest | Promise<IAxiosClientRequest>,
+        onFulfilled?: (value: IAxiosClientRequest) => IAxiosClientRequest | Promise<IAxiosClientRequest> | any,
         onRejected?: (error: any) => any,
       ) => number;
     };
     response: {
       use: (
-        onFulfilled?: <T>(value: IAxiosClientResponse<T>) => IAxiosClientResponse<T> | Promise<IAxiosClientResponse<T>>,
+        onFulfilled?: (
+          value: IAxiosClientResponse<any>,
+        ) => IAxiosClientResponse<any> | Promise<IAxiosClientResponse<any>> | any,
         onRejected?: (error: any) => any,
       ) => number;
     };
@@ -32,7 +34,7 @@ export interface IAxiosClientInstance {
 
 export interface IAxiosClientConfig {
   baseURL: string;
-  headers: { [key: string]: string };
+  headers?: { [key: string]: string };
   fulfilledHandler?: {
     request?: (value: IAxiosClientRequest) => IAxiosClientRequest | Promise<IAxiosClientRequest>;
     response?: <T>(value: IAxiosClientResponse<T>) => IAxiosClientResponse<T> | Promise<IAxiosClientResponse<T>>;
@@ -44,7 +46,11 @@ export interface IAxiosClientConfig {
   logger: ILogger;
 }
 
-export class AxiosClient {
+export interface IAxiosClient {
+  instance: IAxiosClientInstance;
+}
+
+export class AxiosClient implements IAxiosClient {
   public instance: IAxiosClientInstance;
   private logger: ILogger;
 

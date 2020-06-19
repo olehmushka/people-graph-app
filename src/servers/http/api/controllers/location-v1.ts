@@ -11,7 +11,7 @@ import { API } from '../models/schema';
 @controller('/v1/location')
 export class LocationV1Controller implements interfaces.Controller {
   constructor(
-    @inject(TYPES.locationHandlers) private locationHandler: ILocationHandlersV1,
+    @inject(TYPES.locationHandlersV1) private locationHandler: ILocationHandlersV1,
     @inject(TYPES.locationMapper) private locationMapper: ILocationMapper,
   ) {}
 

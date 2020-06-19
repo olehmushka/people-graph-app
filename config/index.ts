@@ -30,17 +30,25 @@ export interface IConfig {
     user: string;
     password: string;
   };
-  hosts: {
-    getCountries: string;
-    getLocation: string;
-  };
-  getLocation: {
-    apiToken: string;
-    userEmail: string;
-    accessTokenPath: string;
-    countriesPath: string;
-    statesPath: string;
-    citiesPath: string;
+  services: {
+    wikipedia: {
+      host: string;
+      paths: {
+        countries: string;
+      };
+    };
+    geographic: {
+      host: string;
+      paths: {
+        countryCodes: string;
+      };
+    };
+    restCountries: {
+      host: string;
+      paths: {
+        countriesV2: string;
+      };
+    };
   };
 }
 
@@ -73,6 +81,26 @@ export default ((logger: BaseLogger): IConfig => {
       port: parseInt(process.env.POSTGRES_PORT as string, 10) || 5432,
       user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
+    },
+    services: {
+      wikipedia: {
+        host: process.env.WIKIPEDIA_HOST,
+        paths: {
+          countries: process.env.WIKIPEDIA_COUNTRIES_PATH,
+        },
+      },
+      geographic: {
+        host: process.env.GEOGRAPHIC_HOST,
+        paths: {
+          countryCodes: process.env.GEOGRAPHIC_COUNTRY_CODES,
+        },
+      },
+      restCountries: {
+        host: process.env.REST_COUNTRIES_HOST,
+        paths: {
+          countriesV2: process.env.REST_COUNTRIES_COUNTRIES_V2_PATH,
+        }
+      },
     },
   };
   const { error, value } = configSchema.validate(configs);

@@ -28,11 +28,13 @@ export interface ICity extends IBaseCity {
   country: ICountry;
 }
 
-export interface ILocationHandlersGetAllParams {
+export interface IGetAllParams {
   skip: number;
   limit: number;
 }
 
-export interface ILocationHandlersGetAllCountriesParams extends ILocationHandlersGetAllParams {
+export interface ILocationHandlersV1GetAllCountriesParams extends IGetAllParams {
   countryName?: string;
 }
+
+export interface ILocationHandlersV2GetAllCountriesParams extends IGetAllParams {}

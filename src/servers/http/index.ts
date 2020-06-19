@@ -11,7 +11,14 @@ import middlewares, { errors } from './api/middlewares';
 import { PersonMapper, IPersonMapper, LocationMapper, ILocationMapper } from './api/mappers';
 import { Neo4jClient } from '../../core/modules/neo4j';
 import { PostgresClient } from '../../core/modules/postgres';
-import { getPersonHandler, IPersonHandlers, getLocationHandlerV1, ILocationHandlersV1 } from '../../core/handlers';
+import {
+  getPersonHandler,
+  IPersonHandlers,
+  getLocationHandlerV1,
+  getLocationHandlerV2,
+  ILocationHandlersV1,
+  ILocationHandlersV2,
+} from '../../core/handlers';
 import { getLogger, ILogger } from '../../core/lib/logger';
 
 export interface IHttpServerDependencies {
@@ -34,8 +41,12 @@ export class HttpServer {
       .toConstantValue(getPersonHandler({ logger: baseLogger, neo4jClient, postgresClient }));
 
     container
-      .bind<ILocationHandlersV1>(TYPES.locationHandlers)
+      .bind<ILocationHandlersV1>(TYPES.locationHandlersV1)
       .toConstantValue(getLocationHandlerV1({ logger: baseLogger, postgresClient }));
+
+    container
+      .bind<ILocationHandlersV2>(TYPES.locationHandlersV2)
+      .toConstantValue(getLocationHandlerV2({ logger: baseLogger }));
 
     container.bind<IPersonMapper>(TYPES.personMapper).to(PersonMapper).inSingletonScope();
 

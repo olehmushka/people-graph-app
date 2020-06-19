@@ -29,4 +29,25 @@ export const configSchema = joi.object().keys({
     user: joi.string().required(),
     password: joi.string().required(),
   }),
+  services: joi.object().keys({
+    wikipedia: joi.object().keys({
+      host: joi.string().uri().required(),
+      paths: joi.object().keys({
+        countries: joi.string().required(),
+      }),
+    }),
+    geographic: joi.object().keys({
+      host: joi.string().uri().required(),
+      paths: joi.object().keys({
+        countryCodes: joi.string().required(),
+      }),
+    }),
+
+    restCountries: joi.object().keys({
+      host: joi.string().uri().required(),
+      paths: joi.object().keys({
+        countriesV2: joi.string().required(),
+      }),
+    }),
+  }),
 });

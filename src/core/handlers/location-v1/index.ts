@@ -7,12 +7,12 @@ import {
   ILocationRawFullCountry,
   ILocationRowFullCity,
 } from './postgres-parser';
-import { ILocationHandlersGetAllCountriesParams, ICountry, ICountryWithStates, ICity } from '../../interfaces';
+import { ILocationHandlersV1GetAllCountriesParams, ICountry, ICountryWithStates, ICity } from '../../interfaces';
 import { NotFoundError } from '../../../servers/http/api/errors';
 import { ILogger } from '../../lib/logger';
 
 export interface ILocationHandlersV1 {
-  getAllCountries(params: ILocationHandlersGetAllCountriesParams): Promise<ICountry[]>;
+  getAllCountries(params: ILocationHandlersV1GetAllCountriesParams): Promise<ICountry[]>;
   getOneCountry(id: string): Promise<ICountryWithStates>;
   getOneCity(id: string): Promise<ICity>;
 }
@@ -28,7 +28,7 @@ export class LocationHandlersV1 implements ILocationHandlersV1 {
     LocationHandlersV1.instance = this;
   }
 
-  public async getAllCountries(params: ILocationHandlersGetAllCountriesParams): Promise<ICountry[]> {
+  public async getAllCountries(params: ILocationHandlersV1GetAllCountriesParams): Promise<ICountry[]> {
     const self = this === undefined ? LocationHandlersV1.instance : this;
 
     try {

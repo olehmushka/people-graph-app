@@ -1,14 +1,14 @@
 import isNil from 'lodash/isNil';
-import { ILocationHandlersGetAllCountriesParams } from '../../interfaces';
+import { ILocationHandlersV1GetAllCountriesParams } from '../../interfaces';
 
 export interface ILocationQueryBuilder {
-  getAllCountries(params: ILocationHandlersGetAllCountriesParams): string;
+  getAllCountries(params: ILocationHandlersV1GetAllCountriesParams): string;
   getOneCountry(id: string): string;
   getOneCity(id: string): string;
 }
 
 export class LocationPostgresQueryBuilder implements ILocationQueryBuilder {
-  public getAllCountries(params: ILocationHandlersGetAllCountriesParams): string {
+  public getAllCountries(params: ILocationHandlersV1GetAllCountriesParams): string {
     if (!isNil(params.countryName)) {
       return `
       SELECT * FROM countries

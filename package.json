@@ -1,6 +1,6 @@
 {
   "name": "people-graph-app",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "app for building graph with people",
   "main": "dist/index.js",
   "repository": "https://github.com/olehmushka/people-graph-app",
@@ -37,7 +37,7 @@
     "@grpc/proto-loader": "0.5.4",
     "@hapi/boom": "8.0.1",
     "@hapi/joi": "17.1.1",
-    "@hapi/joi-date": "^2.0.1",
+    "@hapi/joi-date": "2.0.1",
     "axios": "0.19.2",
     "cheerio": "1.0.0-rc.3",
     "dotenv": "8.1.0",
