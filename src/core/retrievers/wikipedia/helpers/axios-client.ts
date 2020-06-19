@@ -5,6 +5,8 @@ import config from '../../../../../config';
 export const getWikiAxiosClient = (logger: ILogger): IAxiosClient =>
   new AxiosClient({
     baseURL: config.services.wikipedia.host,
-    headers: {},
+    headers: {
+      'Content-Type': 'text/html',
+    },
     logger,
   });

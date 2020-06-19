@@ -15,8 +15,8 @@ export class GeographicCountryCodesRetriever implements IGeographicCountryCodesR
     return this.axiosClient
       .get<IAxiosClientResponse<string>>(config.services.wikipedia.paths.countries)
       .pipe<ICountry[]>(
-        map<IAxiosClientResponse<string>, ICountry[]>(
-          (res: IAxiosClientResponse<string>): ICountry[] => this.parser.getCountryCodes(res.data),
+        map<IAxiosClientResponse<string>, ICountry[]>((res: IAxiosClientResponse<string>): ICountry[] =>
+          this.parser.getCountryCodes(res.data),
         ),
       )
       .toPromise();

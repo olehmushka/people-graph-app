@@ -5,6 +5,8 @@ import config from '../../../../../config';
 export const getRestCountriesAxiosClient = (logger: ILogger): IAxiosClient =>
   new AxiosClient({
     baseURL: config.services.restCountries.host,
-    headers: {},
+    headers: {
+      'Content-Type': 'application/json',
+    },
     logger,
   });

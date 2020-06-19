@@ -5,6 +5,8 @@ import config from '../../../../../config';
 export const getGeographicAxiosClient = (logger: ILogger): IAxiosClient =>
   new AxiosClient({
     baseURL: config.services.geographic.host,
-    headers: {},
+    headers: {
+      'Content-Type': 'text/html',
+    },
     logger,
   });

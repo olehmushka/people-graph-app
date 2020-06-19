@@ -12,15 +12,11 @@ export class WikiLocationRetriever implements IWikiLocationRetriever {
   constructor(private axiosClient: IAxiosClient, private parser: IWikiLocationParser) {}
 
   public getCountries(): Promise<ICountry[]> {
-    this.axiosClient.instance.interceptors.response.use((res: IAxiosClientResponse<string>) =>
-      this.parser.getCountries(res.data),
-    );
-
     return this.axiosClient
       .get<IAxiosClientResponse<string>>(config.services.wikipedia.paths.countries)
       .pipe<ICountry[]>(
-        map<IAxiosClientResponse<string>, ICountry[]>(
-          (res: IAxiosClientResponse<string>): ICountry[] => this.parser.getCountries(res.data),
+        map<IAxiosClientResponse<string>, ICountry[]>((res: IAxiosClientResponse<string>): ICountry[] =>
+          this.parser.getCountries(res.data),
         ),
       )
       .toPromise();
