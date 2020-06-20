@@ -42,11 +42,20 @@ export const configSchema = joi.object().keys({
         countryCodes: joi.string().required(),
       }),
     }),
-
     restCountries: joi.object().keys({
       host: joi.string().uri().required(),
       paths: joi.object().keys({
         countriesV2: joi.string().required(),
+      }),
+    }),
+    instagram: joi.object().keys({
+      host: joi.string().uri().required(),
+      paths: joi.object().keys({
+        login: joi.string().required(),
+      }),
+      login: joi.object().keys({
+        email: joi.string().email().required(),
+        password: joi.string().required(),
       }),
     }),
   }),

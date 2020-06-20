@@ -49,6 +49,16 @@ export interface IConfig {
         countriesV2: string;
       };
     };
+    instagram: {
+      host: string;
+      paths: {
+        login: string;
+      };
+      login: {
+        email: string;
+        password: string;
+      };
+    };
   };
 }
 
@@ -99,7 +109,17 @@ export default ((logger: BaseLogger): IConfig => {
         host: process.env.REST_COUNTRIES_HOST,
         paths: {
           countriesV2: process.env.REST_COUNTRIES_COUNTRIES_V2_PATH,
-        }
+        },
+      },
+      instagram: {
+        host: process.env.INSTAGRAM_HOST,
+        paths: {
+          login: process.env.INSTAGRAM_LOGIN_PATH,
+        },
+        login: {
+          email: process.env.INSTAGRAM_LOGIN_EMAIL,
+          password: process.env.INSTAGRAM_LOGIN_PASSWORD,
+        },
       },
     },
   };
