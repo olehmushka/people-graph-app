@@ -40,5 +40,6 @@ module.exports = {
         suiteNameTemplate: '{filename}'
       }
     ]
-  ]
+  ],
+  setupFiles: ['<rootDir>/.jest/setEnvVars.js']
 };
