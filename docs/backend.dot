@@ -1,0 +1,38 @@
+digraph {
+  label = "People graph applicatin Architecture"
+
+  node [shape=ellipse style=filled, fillcolor=palegreen,color=black]; "Person Web Interface";
+  node [shape=ellipse style=filled, fillcolor=khaki1,color=black]; "Person HTTP Server"; "Person gRPC Server";
+  node [shape=ellipse style=filled, fillcolor=lightblue,color=black]; "Person Web Server Handler";
+
+  node [shape=ellipse style=filled, fillcolor=wheat,color=black]; "Person Instagram Worker";
+
+  node [shape=cylinder style=filled, fillcolor=lightgrey,color=black]; "Person Graph Storage"; "Person SQL Storage";
+
+  node [shape=ellipse style=filled, fillcolor=pink,color=black]; "Internet";
+
+  {rank=same; "Internet"}
+
+  "Person Instagram Worker" -> "Internet"
+  "Internet" -> "Person Web Interface"
+
+  subgraph cluster_web_server {
+    label = "Person Service"
+    style = "dashed"
+
+    {rank=source;"Person Web Interface"}
+    {rank=same;"Person HTTP Server"; "Person gRPC Server"; "Person Web Server Handler";"Person Instagram Worker"}
+
+    "Person Web Interface" -> "Person HTTP Server"
+    "Person Web Interface" -> "Person gRPC Server"
+    "Person HTTP Server" -> "Person Web Server Handler"
+    "Person gRPC Server" -> "Person Web Server Handler"
+
+    "Person Web Server Handler" -> "Person Instagram Worker"
+    "Person Instagram Worker" -> "Person Graph Storage"
+    "Person Instagram Worker" -> "Person SQL Storage"
+
+    "Person Web Server Handler" -> "Person Graph Storage"
+    "Person Web Server Handler" -> "Person SQL Storage"
+  }  
+}
