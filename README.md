@@ -1,5 +1,7 @@
 # People Graph Application
 
+![Project Architecture](./architecture.png)
+
 ## Installation
 The microservice requires a local installation of Node.js using [specific version](https://nodejs.org/uk/download/) only or use [NVM](https://github.com/nvm-sh/nvm/blob/master/README.md) and choose an appropriate version. See version in package.json 
 
