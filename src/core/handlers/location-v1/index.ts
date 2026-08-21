@@ -86,13 +86,14 @@ export class LocationHandlersV1 implements ILocationHandlersV1 {
     }
   }
 
-  private errorHandle<T extends Error>(error: T): Promise<T> {
+  private errorHandle(error: unknown): never {
     const self = this === undefined ? LocationHandlersV1.instance : this;
 
-    const { stack, message } = error;
+    const normalizedError = error instanceof Error ? error : new Error(String(error));
+    const { stack, message } = normalizedError;
     self.logger.error({ stack }, message);
 
-    return Promise.reject(error);
+    throw normalizedError;
   }
 }
 

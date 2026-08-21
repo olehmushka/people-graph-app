@@ -31,9 +31,10 @@ export class PersonHandler implements gpb.IPersonServer {
 
       callback(null, response);
     } catch (error) {
-      const { stack, message } = error;
+      const normalizedError = error instanceof Error ? error : new Error(String(error));
+      const { stack, message } = normalizedError;
       this.logger.error({ stack, message }, 'Person Handler create one error');
-      callback(error, null);
+      callback(normalizedError, null);
     }
   }
   public async getAll(
@@ -50,9 +51,10 @@ export class PersonHandler implements gpb.IPersonServer {
 
       callback(null, response);
     } catch (error) {
-      const { stack, message } = error;
+      const normalizedError = error instanceof Error ? error : new Error(String(error));
+      const { stack, message } = normalizedError;
       this.logger.error({ stack, message }, 'Person Handler get all error');
-      callback(error, null);
+      callback(normalizedError, null);
     }
   }
   public async deleteOne(
@@ -60,7 +62,7 @@ export class PersonHandler implements gpb.IPersonServer {
     callback: sendUnaryData<pb.DeleteOneResponse>,
   ): Promise<void> {
     try {
-      const { id } = await personDeleteSchema.validate({
+      const { id } = await personDeleteSchema.validate<{ id: string }>({
         id: this.personMapper.requestDeleteOne(call),
       });
 
@@ -69,9 +71,10 @@ export class PersonHandler implements gpb.IPersonServer {
 
       callback(null, response);
     } catch (error) {
-      const { stack, message } = error;
+      const normalizedError = error instanceof Error ? error : new Error(String(error));
+      const { stack, message } = normalizedError;
       this.logger.error({ stack, message }, 'Person Handler delete one error');
-      callback(error, null);
+      callback(normalizedError, null);
     }
   }
 }

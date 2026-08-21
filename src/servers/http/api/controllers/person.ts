@@ -7,11 +7,16 @@ import { IPersonHandlers } from '../../../../core/handlers';
 import { personCreateSchema, personGetAllSchema, personDeleteSchema } from '../../../schemas';
 import { IPersonMapper } from '../mappers';
 import { API } from '../models/schema';
+import { IPersonHandlersGetAllParams } from '../../../../core/interfaces';
 
 @controller('/person')
 export class PersonController implements interfaces.Controller {
   constructor(
+    // inversify@5.0.1's inject() typings declare `targetKey: string`, which is narrower than TS's
+    // ParameterDecorator contract (`string | symbol | undefined`) for constructor parameters; false positive, safe at runtime.
+    // @ts-expect-error
     @inject(TYPES.personHandlers) private personHandler: IPersonHandlers,
+    // @ts-expect-error inversify@5.0.1 inject() typings gap, see comment above (safe at runtime)
     @inject(TYPES.personMapper) private personMapper: IPersonMapper,
   ) {}
 
@@ -28,7 +33,7 @@ export class PersonController implements interfaces.Controller {
 
   @httpGet('/')
   public async getAll(@request() req: Request, @response() res: Response): Promise<void> {
-    const { skip, limit } = await personGetAllSchema.validate(req.query);
+    const { skip, limit } = await personGetAllSchema.validate<IPersonHandlersGetAllParams>(req.query);
     const result = await this.personHandler.getAll({ skip, limit });
     const response: API.GetAllPersonsResponse = this.personMapper.responseGetAll(result);
 
@@ -37,7 +42,7 @@ export class PersonController implements interfaces.Controller {
 
   @httpDelete('/:id')
   public async deleteOne(@request() req: Request, @response() res: Response): Promise<void> {
-    const { id } = await personDeleteSchema.validate(req.params);
+    const { id } = await personDeleteSchema.validate<{ id: string }>(req.params);
     await this.personHandler.deleteOne(id);
     const response: API.PersonDeleteOneResponse = this.personMapper.responseDeleteOne();
 

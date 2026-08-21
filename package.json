@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "engines": {
-    "node": ">=12.13"
+    "node": ">=24"
   },
   "scripts": {
     "build": "yarn clear && copyfiles swagger.yml dist && echo Using TypeScript && tsc --version && tsc --pretty",
@@ -109,6 +109,6 @@
     "rimraf": "3.0.2",
     "supertest": "4.0.2",
     "ts-jest": "24.0.2",
-    "typescript": "3.8.3"
+    "typescript": "5.9.3"
   }
 }

@@ -1,4 +1,4 @@
-import { Client as NativePostgresClient, QueryResult } from 'pg';
+import { Client as NativePostgresClient, QueryResult, QueryResultRow } from 'pg';
 import { ILogger } from '../../lib/logger';
 
 export interface IPostgresConfig {
@@ -25,14 +25,14 @@ export const creatPostgresConnection = async (
 
     return client;
   } catch (error) {
-    const { stack, message } = error;
+    const { stack, message } = error instanceof Error ? error : { stack: undefined, message: String(error) };
     logger.error({ stack, message }, 'Postgres connection error');
     process.exit(1);
   }
 };
 
 export interface IPostgresClient {
-  query<T>(query: string, values?: any[]): Promise<QueryResult<T> | QueryResult<T>[]>;
+  query<T extends QueryResultRow>(query: string, values?: any[]): Promise<QueryResult<T> | QueryResult<T>[]>;
   end(): Promise<void>;
 }
 
@@ -42,11 +42,11 @@ export class PostgresClient implements IPostgresClient {
     PostgresClient.instance = this;
   }
 
-  public query<T>(query: string, values?: any[]): Promise<QueryResult<T> | QueryResult<T>[]> {
+  public query<T extends QueryResultRow>(query: string, values?: any[]): Promise<QueryResult<T> | QueryResult<T>[]> {
     const self = this === undefined ? PostgresClient.instance : this;
 
     return self.client
-      .query(query, values)
+      .query<T>(query, values)
       .then((result) => self.buildResponse<T>(result))
       .catch(self.errorHandler);
   }
@@ -57,7 +57,9 @@ export class PostgresClient implements IPostgresClient {
     return self.client.end();
   }
 
-  private buildResponse<T>(data: QueryResult<T> | QueryResult<T>[]): QueryResult<T> | QueryResult<T>[] {
+  private buildResponse<T extends QueryResultRow>(
+    data: QueryResult<T> | QueryResult<T>[],
+  ): QueryResult<T> | QueryResult<T>[] {
     if (Array.isArray(data)) {
       return data.filter((result) => result.command === 'SELECT');
     }
@@ -65,7 +67,7 @@ export class PostgresClient implements IPostgresClient {
     return data;
   }
 
-  private errorHandler<T extends Error>(error: T): never {
+  private errorHandler(error: unknown): never {
     const self = this === undefined ? PostgresClient.instance : this;
     self.logger.error(error, 'Postrges query error');
     throw error;

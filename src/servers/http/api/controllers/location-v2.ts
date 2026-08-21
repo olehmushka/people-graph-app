@@ -7,7 +7,12 @@ import { ILocationHandlersV2 } from '../../../../core/handlers';
 
 @controller('/v2/location')
 export class LocationV2Controller implements interfaces.Controller {
-  constructor(@inject(TYPES.locationHandlersV2) private locationHandler: ILocationHandlersV2) {}
+  constructor(
+    // inversify@5.0.1's inject() typings declare `targetKey: string`, which is narrower than TS's
+    // ParameterDecorator contract (`string | symbol | undefined`) for constructor parameters; false positive, safe at runtime.
+    // @ts-expect-error
+    @inject(TYPES.locationHandlersV2) private locationHandler: ILocationHandlersV2,
+  ) {}
 
   @httpGet('/country')
   public async getAll(@request() req: Request, @response() res: Response): Promise<void> {
