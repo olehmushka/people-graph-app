@@ -1,5 +1,9 @@
 # People Graph Application
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Node Version](https://img.shields.io/badge/node-%3E%3D12.13-brightgreen.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-3.8-blue.svg)
+
 ![Project Architecture](./architecture.png)
 
 ## Status
