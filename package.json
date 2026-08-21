@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "engines": {
-    "node": ">=24"
+    "node": ">=22 <24"
   },
   "scripts": {
     "build": "yarn clear && copyfiles swagger.yml dist && echo Using TypeScript && tsc --version && tsc --pretty",

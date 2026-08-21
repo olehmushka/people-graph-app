@@ -1,19 +1,21 @@
 # People Graph Application
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-![Node Version](https://img.shields.io/badge/node-%3E%3D12.13-brightgreen.svg)
-![TypeScript](https://img.shields.io/badge/TypeScript-3.8-blue.svg)
+![Node Version](https://img.shields.io/badge/node-%3E%3D22%20%3C24-brightgreen.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)
 
 ![Project Architecture](./architecture.png)
 
 ## Status
 
-This is a 2020-era side project, snapshotted here as-is rather than actively maintained. Dependencies
-are pinned to what was current at the time (TypeScript 3.8, Express 4.17) and the gRPC server still
-uses the original `grpc` package, which has since been deprecated upstream in favor of
-[`@grpc/grpc-js`](https://github.com/grpc/grpc-node). A dependency refresh (and migrating off `grpc`)
-would be the first step before running this in a new environment; it's called out here rather than
-silently left for someone to discover.
+This is a 2020-era side project, snapshotted here as-is rather than actively maintained. TypeScript
+and Node have been bumped forward (5.9, Node >=22), but Express is still 4.17, and the gRPC server
+still uses the original `grpc` package, which has since been deprecated upstream in favor of
+[`@grpc/grpc-js`](https://github.com/grpc/grpc-node). That old package's native addon is why Node is
+capped below 24: its C++ core genuinely fails to compile against Node 24's newer toolchain (verified
+directly — Node 14 through 22 all compile it fine, 24 doesn't). A dependency refresh (and migrating
+off `grpc`) would be the first step before running this on a newer Node version; it's called out here
+rather than silently left for someone to discover.
 
 ## Installation
 The microservice requires a local installation of Node.js using [specific version](https://nodejs.org/uk/download/) only or use [NVM](https://github.com/nvm-sh/nvm/blob/master/README.md) and choose an appropriate version. See version in package.json 
