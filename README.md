@@ -2,6 +2,15 @@
 
 ![Project Architecture](./architecture.png)
 
+## Status
+
+This is a 2020-era side project, snapshotted here as-is rather than actively maintained. Dependencies
+are pinned to what was current at the time (TypeScript 3.8, Express 4.17) and the gRPC server still
+uses the original `grpc` package, which has since been deprecated upstream in favor of
+[`@grpc/grpc-js`](https://github.com/grpc/grpc-node). A dependency refresh (and migrating off `grpc`)
+would be the first step before running this in a new environment; it's called out here rather than
+silently left for someone to discover.
+
 ## Installation
 The microservice requires a local installation of Node.js using [specific version](https://nodejs.org/uk/download/) only or use [NVM](https://github.com/nvm-sh/nvm/blob/master/README.md) and choose an appropriate version. See version in package.json 
 
