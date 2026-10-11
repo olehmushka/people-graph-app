@@ -47,7 +47,7 @@
     "inversify": "5.0.1",
     "inversify-express-utils": "6.3.2",
     "lodash": "4.17.15",
-    "moment": "2.25.3",
+    "moment": "2.31.0",
     "nanoid": "3.3.18",
     "neo4j-driver": "4.0.2",
     "on-finished": "2.3.0",
